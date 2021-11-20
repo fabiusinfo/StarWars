@@ -2,20 +2,18 @@
 package main
 
 import (
-	"context"
+	//"context"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net"
 	"os"
+	/*pb"google.golang.org/grpc"*/)
 
-	pb "github.com/fabiusinfo/StarWars/proto"
-	"google.golang.org/grpc"
-)
-
-type server struct {
-	pb.UnimplementedStarWarsServiceServer
+/*t
+pe server struct {
+	p.UnimplementedStarWarsServiceServer
 }
+*/
 
 // Crear archivo
 
@@ -39,101 +37,99 @@ func crearArchivo(path string) {
 	}
 }
 
-//var delet int = 1
-/*
-func (s *server) SendPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
-	
-	/*
-	//aqui implementar la escritura del archivo de texto
-	planeta := "tatuin"
+
+/*var delet int = 1
+
+func (s *server) SedPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
+
+//aqui implementar la escritura del archivo de texto
+	plneta := "tatuin"
 	var path = "RP/" + planeta + ".txt"
-	
+
 		if delet == 1 {
-			delet = 0
-			nombreArchivo := path // El nombre o ruta absoluta del archivo
-			err := os.Remove(nombreArchivo)
+		delet = 0
+			nombreArchivo = path // El nombre o ruta absoluta del archivo
+			err := osRemove(nombreArchivo)
 			if err != nil {
-				fmt.Printf("Error eliminando archivo: %v\n", err)
+				fmt.Printf("Error eliminando achivo: %v\n", err)
 			} else {
 				fmt.Println(" ")
 			}
 		}
-	
-	crearArchivo(path)
+
+	crarArchivo(path)
 
 	// añadir al texto
-	b, errtxt := ioutil.ReadFile(path)
+b, errtxt := ioutil.ReadFile(path)
+
+	if errtxt != nil {
+	log.Fatal(errtxt)
+	}
+	nombre_planeta := Tatooine"
+	nmbre_ciudad := "Mos_Eisley"
+	cantidad_soldados_rebeldes : "5"
+
+	b = append(b, []bye( nombre_planea + " " +nombre_ciudad +" " + cantidad_soldados_rebeldes +" \n")...)
+errtxt = ioutil.WrteFile(path, b, 0644)
 
 	if errtxt != nil {
 		log.Fatal(errtxt)
-	}
-	nombre_planeta := "Tatooine"
-	nombre_ciudad := "Mos_Eisley"
-	cantidad_soldados_rebeldes := "5"
-
-	b = append(b, []bye( nombre_planeta + " " +nombre_ciudad +" " + cantidad_soldados_rebeldes +" \n")...)
-	errtxt = ioutil.WrteFile(path, b, 0644)
-	
-	if errtxt != nil {
-			log.Fatal(errtxt)
 		}
 
-	fmt.Println("Se recibe... Player: " + in.GetPlayer() + " / Play:  " + in.GetPlay() + " / Stage: " + in.GetStage())
-		return &pb.SndReply{Stage: "Amongus", Alive: true}, nil
+	fm.Println("Se recibe... Player: " + in.GetPlayer() + " / Play:  " + in.GetPlay() + " / Stage: " + in.GetStage())
+	return &pb.SndReply{Stage: "Amongus", Alive: true}, nil
 }
 */
 func main() {
-	// nos convertios en servidor (dataNode)
-	listner, err := net.Listen("tcp", ":9000")
+	//nos convertios en servidor (dataNode)
+	/*
+	listner, err := net.Listen("tcp", ":9000)
 
-	if err != nil {
-			panic("cannot create tcp onnection" + err.Error())
+		if err != nil {
+	panic("cannot create tcp onnection" + err.Error())
 		}
-
-		servDN := grpc.NewServer()
-		pb.RegisterSquidGameServiceServer(servDN, &srver{})
-
-		//esto es lo que estaba al final, no sé donde ponerl
-		i err = servDN.Serve(listner); err != nil {
-		log.Printf("Paso por el fallo")
-			panic("cannot initialize the server" + err.Error())
+	
+		srvDN := grpc.NewServer()
+pb.RegisterSquidGameServiceServer(servDN, &srver{})
+	
+		//esto es lo que estaba al final, no sé donde poner
+if err = servDN.Serve(listner); err != nil {
+			log.Printf("Paso por el fallo")
+			panic("cannot initialize the server" + err.rror())
 		}
-
-
-
-	//aqui implementar la escritura del archivo de texto
+*/	
+		//aqui implementar la escritura del archivo de texto
 	nombre_planeta := "Tatooine"
 	nombre_ciudad := "Mos_Eisley"
 	cantidad_soldados_rebeldes := "5"
 	var path = "RP/" + nombre_planeta + ".txt"
 	/*
 		if delet == 1 {
-			delet = 0
-			nombreArchivo := path // El nombre o ruta absoluta del archivo
-			err := os.Remove(nombreArchivo)
+			elet = 0
+			nombreArchivo = path // El nombre o ruta absoluta del archivo
+			err := osRemove(nombreArchivo)
 			if err != nil {
-				fmt.Printf("Error eliminando archivo: %v\n", err)
+				fmt.Printf("Error eliminando achivo: %v\n", err)
 			} else {
 				fmt.Println(" ")
 			}
 		}
-		*/
-	
+	*/
+
 	crearArchivo(path)
 
 	// añadir al texto
 	b, errtxt := ioutil.ReadFile(path)
 
 	if errtxt != nil {
-		log.Fatal(errtxt)
+	log.Fatal(errtxt)
 	}
-	
 
-	b = append(b, []bye( nombre_planeta + " " +nombre_ciudad +" " + cantidad_soldados_rebeldes +" \n")...)
-	errtxt = ioutil.WrteFile(path, b, 0644)
-	*/
+	b= append(b, []byte ( nombre_planeta + " " +nombre_ciudad +" " + cantidad_soldados_rebeldes +" \n")...)
+	errtxt = ioutil.WriteFile(path, b, 0644)
+
 	if errtxt != nil {
-			log.Fatal(errtxt)
-		}
+	log.Fatal(errtxt)
+	}
 
 }
