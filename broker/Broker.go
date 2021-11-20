@@ -2,10 +2,7 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"math"
-	"math/rand"
 	"net"
 	"strconv"
 	"time"
@@ -49,6 +46,10 @@ func failOnError(err error, msg string) {
 	if err != nil {
 		log.Fatalf("%s: %s", msg, err)
 	}
+}
+
+func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.JoinReply, error) {
+	return &pb.JoinReply{Message: "toma la info del planeta"}, nil
 }
 
 func (s *server) JoinGame(ctx context.Context, in *pb.JoinRequest) (*pb.JoinReply, error) {
@@ -116,7 +117,7 @@ func (s *server) SendPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendRep
 			if err != nil {
 				log.Fatalf("could not greet: %v", err)
 			}
-		
+
 			//Envío al Pozo
 
 			if started == true {
@@ -216,8 +217,6 @@ func (s *server) SendPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendRep
 
 }
 
-
-
 func main() {
 	//códigos Etapas
 	//1rv
@@ -242,6 +241,5 @@ func main() {
 		}
 
 	}()
-
 
 }
