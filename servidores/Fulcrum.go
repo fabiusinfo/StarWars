@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	/*pb"google.golang.org/grpc"*/)
+	"net"
 
 /*t
 pe server struct {
@@ -81,24 +82,26 @@ errtxt = ioutil.WrteFile(path, b, 0644)
 }
 */
 func main() {
-	//nos convertios en servidor (dataNode)
-	/*
-	listner, err := net.Listen("tcp", ":9000)
+	//nos convertios en servidor
+	go func() {
+		listner, err := net.Listen("tcp", ":8080")
+		//conn, err := grpc.Dial("10.6.43.41:8080", grpc.WithInsecure())
 
 		if err != nil {
-	panic("cannot create tcp onnection" + err.Error())
+			panic("cannot connect with server " + err.Error())
 		}
-	
-		srvDN := grpc.NewServer()
-pb.RegisterSquidGameServiceServer(servDN, &srver{})
-	
-		//esto es lo que estaba al final, no sé donde poner
-if err = servDN.Serve(listner); err != nil {
-			log.Printf("Paso por el fallo")
-			panic("cannot initialize the server" + err.rror())
+
+		serv := grpc.NewServer()
+		pb.RegisterStarWarsServiceServer(serv, &server{})
+		if err = serv.Serve(listner); err != nil {
+			panic("cannot initialize the server" + err.Error())
+
 		}
-*/	
-		//aqui implementar la escritura del archivo de texto
+		fmt.Println("Esperando un: oye!")
+	}()
+	
+
+	//aqui implementar la escritura del archivo de texto
 	nombre_planeta := "Tatooine"
 	nombre_ciudad := "Mos_Eisley"
 	cantidad_soldados_rebeldes := "5"
