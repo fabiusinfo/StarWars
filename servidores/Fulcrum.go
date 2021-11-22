@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net"
 	"os"
+
 	pb "github.com/fabiusinfo/StarWars/proto"
 	"google.golang.org/grpc"
-	"net"
+)
 
 /*t
 pe server struct {
@@ -38,7 +40,6 @@ func crearArchivo(path string) {
 		defer file.Close()
 	}
 }
-
 
 /*var delet int = 1
 
@@ -99,7 +100,7 @@ func main() {
 			panic("cannot initialize the server" + err.Error())
 
 		}
-		
+
 	}()
 	fmt.Println("Esperando un: oye!")
 	fmt.Scanln(&X)
@@ -128,14 +129,14 @@ func main() {
 	b, errtxt := ioutil.ReadFile(path)
 
 	if errtxt != nil {
-	log.Fatal(errtxt)
+		log.Fatal(errtxt)
 	}
 
-	b= append(b, []byte ( nombre_planeta + " " +nombre_ciudad +" " + cantidad_soldados_rebeldes +" \n")...)
+	b = append(b, []byte(nombre_planeta+" "+nombre_ciudad+" "+cantidad_soldados_rebeldes+" \n")...)
 	errtxt = ioutil.WriteFile(path, b, 0644)
 
 	if errtxt != nil {
-	log.Fatal(errtxt)
+		log.Fatal(errtxt)
 	}
 
 }
