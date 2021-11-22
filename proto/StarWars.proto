@@ -7,6 +7,8 @@ option go_package = "github.com/fabiusinfo/StarWars/proto";
 service StarWarsService {
     rpc ConsultPlanet(ConsultRequest) returns (ConsultReply) {}
 
+    rpc SendInformation(SendRequest) returns (SendReply) {}
+
 
 }
 
@@ -16,6 +18,14 @@ message ConsultRequest {
 }
 
 message ConsultReply {
+    string message = 1;
+}
+
+message SendRequest {
+    string message = 1;
+}
+
+message SendReply {
     string message = 1;
 }
 

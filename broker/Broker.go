@@ -6,14 +6,11 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"strconv"
-	"time"
 
 	//"strconv"
 	//"time"
 
 	pb "github.com/fabiusinfo/StarWars/proto"
-	"github.com/streadway/amqp"
 	"google.golang.org/grpc"
 )
 
@@ -52,182 +49,17 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.JoinReply, error) {
-	return &pb.JoinReply{Message: "toma la info del planeta"}, nil
+func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
+	return &pb.ConsultReply{Message: "toma la info del planeta"}, nil
 }
 
-func (s *server) sendInformation(ctx context.Context, in *pb.sendRequest) (*pb.sendReply, error) {
+func (s *server) SendInformation(ctx context.Context, in *pb.SendRequest) (*pb.sendReply, error) {
 
-	return &pb.AmountReply{Message: "se envia la informacion del informante"}, nil
-}
-
-func (s *server) JoinGame(ctx context.Context, in *pb.JoinRequest) (*pb.JoinReply, error) {
-	//players[in.GetPlayer()] = "alive"
-	totalPlayers += 1
-	list_of_players = append(list_of_players, PlayerStruct{in.GetPlayer(), true, 0})
-	return &pb.JoinReply{Message: "inscrito con exito"}, nil
-}
-
-func (s *server) Started(ctx context.Context, in *pb.StartRequest) (*pb.StartReply, error) {
-	return &pb.StartReply{Started: started}, nil
-}
-
-func (s *server) AskRound(ctx context.Context, in *pb.AskRequest) (*pb.AskReply, error) {
-	return &pb.AskReply{Round: int32(actualRound)}, nil
-}
-
-func (s *server) DeadOrAlive(ctx context.Context, in *pb.DeadRequest) (*pb.DeadReply, error) {
-	alive := true
-	if in.GetStage() == "1rv" {
-		for i := 0; i < 16; i++ {
-			if list_of_players[i].id == in.GetPlayer() {
-				alive = list_of_players[i].alive
-			}
-		}
-	} else if in.GetStage() == "2tc" {
-		for i := 0; i < len(group1); i++ {
-			if group1[i].id == in.GetPlayer() {
-				alive = group1[i].alive
-			}
-		}
-		for i := 0; i < len(group2); i++ {
-			if group2[i].id == in.GetPlayer() {
-				alive = group2[i].alive
-			}
-		}
-	} else {
-		log.Printf("para el nivel 3 no es necesario")
-
-	}
-
-	return &pb.DeadReply{Dead: alive}, nil
-}
-
-func (s *server) SendPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
-	alive := true
-	flaggy = true
-
-	if actualRound != 0 {
-		if in.GetRound() == actualRound {
-
-			//envío al nameNode
-			conn, err := grpc.Dial("10.6.43.42:8080", grpc.WithInsecure())
-
-			if err != nil {
-				panic("cannot connect with server " + err.Error())
-			}
-
-			serviceLider := pb.NewStarWarsServiceClient(conn)
-
-			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-			defer cancel()
-
-			_, err = serviceLider.SendPlays(ctx, &pb.SendRequest{Player: in.GetPlayer(), Play: in.GetPlay(), Stage: in.GetStage(), Round: in.GetRound()})
-			if err != nil {
-				log.Fatalf("could not greet: %v", err)
-			}
-
-			//Envío al Pozo
-
-			if started == true {
-				pPlay, errpPlay := strconv.Atoi(in.GetPlay())
-				if errpPlay != nil {
-					log.Fatalf("could not greet: %v", errpPlay)
-				}
-				if actualStage == "1rv" {
-					for i := 0; i < 16; i++ {
-						if list_of_players[i].id == in.GetPlayer() {
-
-							list_of_players[i].score += pPlay
-						}
-					}
-				} else if actualStage == "2tc" {
-					for i := 0; i < len(group1); i++ {
-						if group1[i].id == in.GetPlayer() {
-
-							group1[i].score += pPlay
-						}
-					}
-					for i := 0; i < len(group2); i++ {
-						if group2[i].id == in.GetPlayer() {
-
-							group2[i].score += pPlay
-						}
-					}
-				} else {
-					for i := 0; i < len(group3); i++ {
-						if group3[i].id == in.GetPlayer() {
-
-							group3[i].score += pPlay
-						}
-					}
-				}
-
-				if actualStage == "1rv" {
-
-					if pPlay > liderPlay {
-						alive = false
-						for i := 0; i < 16; i++ {
-							if list_of_players[i].id == in.GetPlayer() {
-								list_of_players[i].alive = false
-							}
-						}
-						conn, err := amqp.Dial("amqp://admin:test@10.6.43.41:5672/")
-						failOnError(err, "Failed to connect to RabbitMQ")
-						defer conn.Close()
-
-						ch, err := conn.Channel()
-						failOnError(err, "Failed to open a channel")
-						defer ch.Close()
-
-						q, err := ch.QueueDeclare(
-							"hello", // name
-							false,   // durable
-							false,   // delete when unused
-							false,   // exclusive
-							false,   // no-wait
-							nil,     // arguments
-						)
-						failOnError(err, "Failed to declare a queue")
-
-						i := in.GetPlayer()
-						s := in.GetStage()
-
-						body := "Jugador_" + i + " Ronda_" + s
-
-						err = ch.Publish(
-							"",     // exchange
-							q.Name, // routing key
-							false,  // mandatory
-							false,  // immediate
-							amqp.Publishing{
-								ContentType: "text/plain",
-								Body:        []byte(body),
-							})
-						failOnError(err, "Failed to publish a message")
-						log.Printf("Ha muerto: %s ", body)
-					}
-				}
-			} else {
-				log.Printf("aún no comienza el nivel")
-
-				return &pb.SendReply{Stage: actualStage, Alive: alive, Round: in.GetRound()}, nil
-			}
-			return &pb.SendReply{Stage: actualStage, Alive: alive, Round: in.GetRound() + 1}, nil
-		} else {
-			log.Printf("ya realizaste la jugada en esta ronda ")
-			return &pb.SendReply{Stage: actualStage, Alive: alive, Round: in.GetRound()}, nil
-		}
-
-	} else {
-		log.Printf("el lider todavía no comienza la ronda")
-		return &pb.SendReply{Stage: actualStage, Alive: alive, Round: in.GetRound()}, nil
-	}
-
+	return &pb.SendReply{Message: "información recibida con éxito"}, nil
 }
 
 func main() {
-
+	X := "none"
 	go func() {
 		// nos convertimos en servidor
 		listner, err := net.Listen("tcp", ":8080")
@@ -244,7 +76,9 @@ func main() {
 			log.Printf("paso por el fallo")
 			panic("cannot initialize the server" + err.Error())
 		}
-		fmt.Println("Esperando un: oye!")
+
 	}()
+	fmt.Println("Esperando un: oye!")
+	fmt.Scanln(&X)
 
 }

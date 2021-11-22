@@ -13,7 +13,6 @@ import (
 
 	pb "github.com/fabiusinfo/StarWars/proto"
 	"google.golang.org/grpc"
-	//"google.golang.org/grpc"
 )
 
 type server struct {

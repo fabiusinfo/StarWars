@@ -7,7 +7,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	/*pb"google.golang.org/grpc"*/)
+	pb "github.com/fabiusinfo/StarWars/proto"
+	"google.golang.org/grpc"
 	"net"
 
 /*t
@@ -83,6 +84,7 @@ errtxt = ioutil.WrteFile(path, b, 0644)
 */
 func main() {
 	//nos convertios en servidor
+	X := "none"
 	go func() {
 		listner, err := net.Listen("tcp", ":8080")
 		//conn, err := grpc.Dial("10.6.43.41:8080", grpc.WithInsecure())
@@ -97,9 +99,10 @@ func main() {
 			panic("cannot initialize the server" + err.Error())
 
 		}
-		fmt.Println("Esperando un: oye!")
+		
 	}()
-	
+	fmt.Println("Esperando un: oye!")
+	fmt.Scanln(&X)
 
 	//aqui implementar la escritura del archivo de texto
 	nombre_planeta := "Tatooine"

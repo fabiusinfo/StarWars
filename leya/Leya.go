@@ -16,8 +16,7 @@ import (
 	"time"
 
 	pb "github.com/fabiusinfo/StarWars/proto"
-	//amqp "github.com/rabbitmq/amqp091-go"
-	//"google.golang.org/grpc"
+	"google.golang.org/grpc"
 )
 
 type server struct {
