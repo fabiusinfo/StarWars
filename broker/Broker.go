@@ -1,15 +1,19 @@
 package main
 
 import (
+	//"context"
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"strconv"
 	"time"
 
-	pb "github.com/fabiusinfo/StarWars/proto"
-	amqp "github.com/rabbitmq/amqp091-go"
+	//"strconv"
+	//"time"
 
+	pb "github.com/fabiusinfo/StarWars/proto"
+	"github.com/streadway/amqp"
 	"google.golang.org/grpc"
 )
 
@@ -223,13 +227,9 @@ func (s *server) SendPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendRep
 }
 
 func main() {
-	//códigos Etapas
-	//1rv
-	//2tc
-	//3tn
 
 	go func() {
-		// nos convertimos en servidor (LIDER)
+		// nos convertimos en servidor
 		listner, err := net.Listen("tcp", ":8080")
 
 		if err != nil {
@@ -244,7 +244,7 @@ func main() {
 			log.Printf("paso por el fallo")
 			panic("cannot initialize the server" + err.Error())
 		}
-
+		fmt.Println("Esperando un: oye!")
 	}()
 
 }
