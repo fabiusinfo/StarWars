@@ -52,6 +52,11 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	return &pb.JoinReply{Message: "toma la info del planeta"}, nil
 }
 
+func (s *server) sendInformation(ctx context.Context, in *pb.sendRequest) (*pb.sendReply, error) {
+
+	return &pb.AmountReply{Message: "se envia la informacion del informante"}, nil
+}
+
 func (s *server) JoinGame(ctx context.Context, in *pb.JoinRequest) (*pb.JoinReply, error) {
 	//players[in.GetPlayer()] = "alive"
 	totalPlayers += 1
