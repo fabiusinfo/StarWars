@@ -29,22 +29,40 @@ func main() {
 			flag1 = true
 		}
 	}
+	//envío al Broker
 	conn, err := grpc.Dial("10.6.43.41:8080", grpc.WithInsecure())
 
 	if err != nil {
 		panic("cannot connect with server " + err.Error())
 	}
-
-	// Almirante Thrawn
 	serviceInformant := pb.NewStarWarsServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := serviceInformant.sendInformation(ctx, &pb.SendRequest{Message: ""})
+	r, err := serviceInformant.SendInformationB(ctx, &pb.SendRequest{Message: ""})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Greeting: %s", r.GetMessage())
+	log.Printf("Greeting: %s", r.GetIp())
+	log.Printf("Greeting: %s", r.GetPort())
+
+	//envío al Flucrum
+
+	conn2, err := grpc.Dial(r.GetIp()+":"+r.GetPort(), grpc.WithInsecure())
+
+	if err != nil {
+		panic("cannot connect with server " + err.Error())
+	}
+	serviceInformant2 := pb.NewStarWarsServiceClient(conn2)
+
+	ctx2, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequest{Message: ""})
+	if err != nil {
+		log.Fatalf("could not greet: %v", err)
+	}
+	log.Printf("Greeting: %s", r2.GetMessage())
 
 }

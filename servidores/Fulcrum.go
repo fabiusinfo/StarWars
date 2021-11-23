@@ -3,6 +3,7 @@ package main
 
 import (
 	//"context"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -13,11 +14,14 @@ import (
 	"google.golang.org/grpc"
 )
 
-/*t
-pe server struct {
-	p.UnimplementedStarWarsServiceServer
+type server struct {
+	pb.UnimplementedStarWarsServiceServer
 }
-*/
+
+func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
+
+	return &pb.SendReply2{Message: "Fulcrum recibió tu información con éxito"}, nil
+}
 
 // Crear archivo
 

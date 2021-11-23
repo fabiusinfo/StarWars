@@ -18,44 +18,13 @@ type server struct {
 	pb.UnimplementedStarWarsServiceServer
 }
 
-type PlayerStruct struct {
-	id    string
-	alive bool
-	score int
-}
-
-var liderPlay int
-var actualStage string
-var actualRound int32
-var started bool
-var flaggy bool
-var list_of_players []PlayerStruct
-
-//listas stage 2
-var group1 []PlayerStruct
-var group2 []PlayerStruct
-var groupaux []PlayerStruct
-
-//listas stage 3
-var group3 []PlayerStruct
-
-//var players [16]string
-var totalPlayers int
-
-// Error para el Rabbit
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
-}
-
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
 	return &pb.ConsultReply{Message: "toma la info del planeta"}, nil
 }
 
-func (s *server) SendInformation(ctx context.Context, in *pb.SendRequest) (*pb.sendReply, error) {
+func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
 
-	return &pb.SendReply{Message: "información recibida con éxito"}, nil
+	return &pb.SendReply{Ip: "xx.xx.xx.xx", Port: "xxxx"}, nil
 }
 
 func main() {
