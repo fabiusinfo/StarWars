@@ -28,7 +28,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	serviceSF := pb.NewStarWarsServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	_, err = serviceSF.ConsultPlanet(ctx, &pb.ConsultRequest{Message: "holi soy el broker"})
+	r, err := serviceSF.ConsultPlanet(ctx, &pb.ConsultRequest{Message: "holi soy el broker"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
