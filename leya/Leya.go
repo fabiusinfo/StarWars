@@ -17,6 +17,8 @@ import (
 
 	pb "github.com/fabiusinfo/StarWars/proto"
 	"google.golang.org/grpc"
+	//amqp "github.com/rabbitmq/amqp091-go"
+	//"google.golang.org/grpc"
 )
 
 type server struct {
@@ -39,12 +41,12 @@ func main() {
 		panic("cannot connect with server " + err.Error())
 	}
 
-	servicePlayer := pb.NewSquidGameServiceClient(conn)
+	serviceLeya := pb.NewStarWarsServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := servicePlayer.ConsultPlanet(ctx, &pb.JoinRequest{Message: ""})
+	r, err := serviceLeya.ConsultPlanet(ctx, &pb.JoinRequest{Message: ""})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

@@ -106,22 +106,27 @@ func main() {
 		}
 
 	}()
-	fmt.Println("Esperando un: oye!")
+	
+
+
+
+
+fmt.Println("Esperando un: oye!")
 	fmt.Scanln(&X)
 
-	//aqui implementar la escritura del archivo de texto
-	nombre_planeta := "Tatooine"
-	nombre_ciudad := "Mos_Eisley"
-	cantidad_soldados_rebeldes := "5"
-	var path = "RP/" + nombre_planeta + ".txt"
+//aqui implementar la escritura del archivo de texto
+	nombre_planeta := Tatooine"
+	nombre_ciudad := "os_Eisley"
+	cntidad_soldados_rebeldes := "5"
+var path = "RP/" + nombre_planeta + ".txt"
 	/*
 		if delet == 1 {
-			elet = 0
-			nombreArchivo = path // El nombre o ruta absoluta del archivo
-			err := osRemove(nombreArchivo)
-			if err != nil {
-				fmt.Printf("Error eliminando achivo: %v\n", err)
-			} else {
+		elet = 0
+			nombreArchivo = ath // El nombre o ruta absoluta del archivo
+			err := osRemove(ombreArchivo)
+		if err != nil {
+			fmt.Printf("Error eliminando achivo: %v\n", err)
+		} else {
 				fmt.Println(" ")
 			}
 		}
