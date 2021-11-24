@@ -39,7 +39,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
 
-	return &pb.SendReply{Ip: "10.6.43.44", Port: "8080"}, nil
+	return &pb.SendReply{Ip: "10.6.43.44", Port: "9000"}, nil
 }
 
 func main() {
