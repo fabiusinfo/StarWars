@@ -34,7 +34,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	}
 
 	// ahora esta respuesta se la mandamos a la leia
-	return &pb.ConsultReply{message: r.GetMessage()}, nil
+	return &pb.ConsultReply{Message: r.GetMessage()}, nil
 }
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
