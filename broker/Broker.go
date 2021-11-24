@@ -39,7 +39,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
 
-	fmt.Println("Veamos si conecta")
+	
 	// conexion con informantes
 	conn, err := grpc.Dial("10.6.43.43:8080", grpc.WithInsecure())
 	
@@ -48,7 +48,7 @@ func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.
 	}
 	
 	serviceBroker := pb.NewStarWarsServiceClient(conn)
-	fmt.Println("Si conecto")
+	
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
@@ -57,7 +57,7 @@ func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.
 		log.Fatalf("could not greet: %v", err)
 	}
 
-	return &pb.SendReply{Ip: "xx.xx.xx.xx", Port: "xxxx"}, nil
+	return &pb.SendReply{Ip: r.getIp() , Port: r.getPort()}, nil
 }
 
 func main() {
