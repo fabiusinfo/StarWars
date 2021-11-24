@@ -49,7 +49,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := serviceLeya.ConsultPlanet(ctx, &pb.JoinRequest{Message: ""})
+	r, err := serviceLeya.ConsultPlanet(ctx, &pb.ConsultRequest{Message: ""})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
