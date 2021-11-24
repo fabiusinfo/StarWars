@@ -23,6 +23,13 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	return &pb.SendReply2{Message: "Fulcrum recibió tu información con éxito"}, nil
 }
 
+func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
+
+	return &pb.ConsultReply{Message: "toma la info del planeta"}, nil
+}
+
+
+
 // Crear archivo
 
 func existeError(err error) bool {

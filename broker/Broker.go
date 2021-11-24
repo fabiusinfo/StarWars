@@ -21,23 +21,20 @@ type server struct {
 }
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
-	// conexion con la princesa leya - maquina 2 - playstation 2
-	conn, err := grpc.Dial("10.6.43.42:8080", grpc.WithInsecure())
-
-	if err != nil {
-		panic("cannot connect with server " + err.Error())
-	}
-
-	serviceBroker := pb.NewStarWarsServiceClient(conn)
-
+	
+	// alo fulcrum paha toa la info
+	direction := "10.6.43.43"
+	conn, err := grpc.Dial(direction+":9000", grpc.WithInsecure())
+	serviceSF := pb.NewStarWarsServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-
-	_, err = serviceBroker.ConsultPlanet(ctx, &pb.ConsultRequest{Player: "algo"})
+	r, err = serviceSF.ConsultPlanet(ctx, &pb.ConsultRequest{Message: "holi soy el broker"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	return &pb.ConsultReply{Message: "toma la info del planeta"}, nil
+
+	// ahora esta respuesta se la mandamos a la leia
+	return &pb.ConsultReply{message: r.GetMessage()}, nil
 }
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
@@ -108,5 +105,6 @@ _, err = serviceSF.SendPlays(ctx, &pb.SendRequest{Player: "jaja nose"})
 if err != nil {
 	log.Fatalf("could not greet: %v", err)
 }
+
 
 */
