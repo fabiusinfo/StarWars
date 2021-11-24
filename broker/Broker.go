@@ -52,7 +52,7 @@ func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	_, err = serviceBroker.SendInformationB(ctx, &pb.SendRequest{Message: "algo"})
+	r, err := serviceBroker.SendInformationB(ctx, &pb.SendRequest{Message: "algo"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
