@@ -55,7 +55,7 @@ func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-
+	fmt.Println(r.GetIp())
 	return &pb.SendReply{Ip: r.GetIp(), Port: r.GetPort()}, nil
 }
 
