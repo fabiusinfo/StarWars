@@ -60,7 +60,7 @@ func main() {
 	ctx2, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequest{Message: ""})
+	r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequest{Message: "actualiza esto"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

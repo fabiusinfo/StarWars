@@ -39,24 +39,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
 
-	// conexion con informantes
-	conn, err := grpc.Dial("10.6.43.43:8080", grpc.WithInsecure())
-
-	if err != nil {
-		panic("cannot connect with server " + err.Error())
-	}
-
-	serviceBroker := pb.NewStarWarsServiceClient(conn)
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	r, err := serviceBroker.SendInformationB(ctx, &pb.SendRequest{Message: "algo"})
-	if err != nil {
-		log.Fatalf("could not greet: %v", err)
-	}
-	fmt.Println(r.GetIp())
-	return &pb.SendReply{Ip: r.GetIp(), Port: r.GetPort()}, nil
+	return &pb.SendReply{Ip: "10.6.43.44", Port: "8080"}, nil
 }
 
 func main() {

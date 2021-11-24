@@ -28,8 +28,6 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	return &pb.ConsultReply{Message: "toma la info del planeta"}, nil
 }
 
-
-
 // Crear archivo
 
 func existeError(err error) bool {
@@ -99,7 +97,6 @@ func main() {
 	X := "none"
 	go func() {
 		listner, err := net.Listen("tcp", ":9000")
-		
 
 		if err != nil {
 			panic("cannot connect with server " + err.Error())
