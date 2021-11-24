@@ -118,9 +118,9 @@ func main() {
 	fmt.Scanln(&X)
 
 	//aqui implementar la escritura del archivo de texto
-	nombre_planeta := Tatooine
+	nombre_planeta := "Tatooine"
 	nombre_ciudad := "mos_Eisley"
-	cntidad_soldados_rebeldes := "5"
+	cantidad_soldados_rebeldes := "5"
 	var path = "RP/" + nombre_planeta + ".txt"
 	/*
 		if delet == 1 {
