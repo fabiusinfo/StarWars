@@ -23,7 +23,7 @@ type server struct {
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
 
 	// alo fulcrum paha toa la info
-	direction := "10.6.43.43"
+	direction := "10.6.43.44"
 	conn, err := grpc.Dial(direction+":9000", grpc.WithInsecure())
 	serviceSF := pb.NewStarWarsServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
