@@ -91,8 +91,8 @@ func main() {
 	//nos convertios en servidor
 	X := "none"
 	go func() {
-		listner, err := net.Listen("tcp", ":8080")
-		//conn, err := grpc.Dial("10.6.43.41:8080", grpc.WithInsecure())
+		listner, err := net.Listen("tcp", ":9000")
+		
 
 		if err != nil {
 			panic("cannot connect with server " + err.Error())
@@ -106,19 +106,15 @@ func main() {
 		}
 
 	}()
-	
 
-
-
-
-fmt.Println("Esperando un: oye!")
+	fmt.Println("Esperando un: oye!")
 	fmt.Scanln(&X)
 
-//aqui implementar la escritura del archivo de texto
-	nombre_planeta := Tatooine"
-	nombre_ciudad := "os_Eisley"
+	//aqui implementar la escritura del archivo de texto
+	nombre_planeta := Tatooine
+	nombre_ciudad := "mos_Eisley"
 	cntidad_soldados_rebeldes := "5"
-var path = "RP/" + nombre_planeta + ".txt"
+	var path = "RP/" + nombre_planeta + ".txt"
 	/*
 		if delet == 1 {
 		elet = 0
