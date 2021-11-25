@@ -39,7 +39,9 @@ func Interface(){
             fmt.Scanln(&value)
 
             //mandarselo al Broker
+			//ACTUALIZAR EL PROTO
             //action, planet, city, value
+			//en vez de message
         } else if action == "4" {
             fmt.Println("Ingrese -Nombre planeta-")
             fmt.Scanln(&planet)
@@ -48,6 +50,7 @@ func Interface(){
             fmt.Scanln(&city)
             
             //mandarselo al Broker
+
             //action, planet, city
         } else if action == "5" {
             flag = false
