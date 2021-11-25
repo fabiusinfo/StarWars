@@ -19,6 +19,47 @@ type server struct {
 	pb.UnimplementedStarWarsServiceServer
 }
 
+func Interface(){
+	var action, planet, city, value string
+    fmt.Println("Bienvenda Ahsoka Tano al <Registro planetario>.")
+    flag := true
+    for flag {
+        fmt.Println("Ingrese el número del comando a usar:")
+        fmt.Println("-1- AddCity\n-2- UpdateName\n-3- UpdateNumber\n-4- DeleteCity\n-5- Salir")
+        fmt.Scanln(&action)
+        
+        if action == "1" || action == "2"  || action == "3"{
+            fmt.Println("Ingrese -Nombre planeta-")
+            fmt.Scanln(&planet)
+            
+            fmt.Println("Ingrese -Nombre ciudad-")
+            fmt.Scanln(&city)
+            
+            fmt.Println("Ingrese -Nuevo valor-")
+            fmt.Scanln(&value)
+
+            //mandarselo al Broker
+            //action, planet, city, value
+        } else if action == "4" {
+            fmt.Println("Ingrese -Nombre planeta-")
+            fmt.Scanln(&planet)
+            
+            fmt.Println("Ingrese -Nombre ciudad-")
+            fmt.Scanln(&city)
+            
+            //mandarselo al Broker
+            //action, planet, city
+        } else if action == "5" {
+            flag = false
+            
+            //finaliza el proceso del informante
+        } else {
+            fmt.Println("Ingrese un -comando válido-")
+        }
+    }
+}
+
+
 func main() {
 	action := "none"
 	flag1 := false
