@@ -7,11 +7,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net"
+
+	//"net"
 	"os"
+	"strings"
 
 	pb "github.com/fabiusinfo/StarWars/proto"
-	"google.golang.org/grpc"
+	//	"google.golang.org/grpc"
 )
 
 type server struct {
@@ -50,12 +52,16 @@ func crearArchivo(path string) {
 	}
 }
 
-/*var delet int = 1
+//var delet int = 1
 
-func (s *server) SedPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
+/*
+func (s *server) SendPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
 
 //aqui implementar la escritura del archivo de texto
-	plneta := "tatuin"
+	//commando := GetMessage()
+	comando := "Latierra4 Valpo 8"
+	palabra := strings.Split(commando, " ")
+	planeta := palabra[0]
 	var path = "RP/" + planeta + ".txt"
 
 		if delet == 1 {
@@ -72,17 +78,17 @@ func (s *server) SedPlays(ctx context.Context, in *pb.SendRequest) (*pb.SendRepl
 	crarArchivo(path)
 
 	// añadir al texto
-b, errtxt := ioutil.ReadFile(path)
+	b, errtxt := ioutil.ReadFile(path)
 
 	if errtxt != nil {
 	log.Fatal(errtxt)
 	}
-	nombre_planeta := Tatooine"
-	nmbre_ciudad := "Mos_Eisley"
-	cantidad_soldados_rebeldes : "5"
+
+	nmbre_ciudad := palabra[1]
+	cantidad_soldados_rebeldes : palabra[2]
 
 	b = append(b, []bye( nombre_planea + " " +nombre_ciudad +" " + cantidad_soldados_rebeldes +" \n")...)
-errtxt = ioutil.WrteFile(path, b, 0644)
+	errtxt = ioutil.WrteFile(path, b, 0644)
 
 	if errtxt != nil {
 		log.Fatal(errtxt)
@@ -94,6 +100,7 @@ errtxt = ioutil.WrteFile(path, b, 0644)
 */
 func main() {
 	//nos convertios en servidor
+	/*
 	X := "none"
 	go func() {
 		listner, err := net.Listen("tcp", ":9000")
@@ -110,28 +117,24 @@ func main() {
 		}
 
 	}()
-
+	
 	fmt.Println("Esperando un: oye!")
 	fmt.Scanln(&X)
-
+*/
 	//aqui implementar la escritura del archivo de texto
-	nombre_planeta := "Tatooine"
-	nombre_ciudad := "mos_Eisley"
-	cantidad_soldados_rebeldes := "5"
-	var path = "RP/" + nombre_planeta + ".txt"
-	/*
-		if delet == 1 {
-		elet = 0
-			nombreArchivo = ath // El nombre o ruta absoluta del archivo
-			err := osRemove(ombreArchivo)
-		if err != nil {
-			fmt.Printf("Error eliminando achivo: %v\n", err)
-		} else {
-				fmt.Println(" ")
-			}
-		}
-	*/
 
+	
+
+	comando := "Latierra4 Valpo 8"
+	palabra := strings.Split(comando, " ")
+	nombre_planeta := palabra[0]
+	nombre_ciudad := palabra[1]
+	cantidad_soldados_rebeldes := palabra[2]
+	var path = "servidores/RP/"+nombre_planeta + ".txt"
+	fmt.Println(nombre_planeta)
+	fmt.Println(nombre_ciudad)
+	fmt.Println(cantidad_soldados_rebeldes)
+	
 	crearArchivo(path)
 
 	// añadir al texto
@@ -141,7 +144,7 @@ func main() {
 		log.Fatal(errtxt)
 	}
 
-	b = append(b, []byte(nombre_planeta+" "+nombre_ciudad+" "+cantidad_soldados_rebeldes+" \n")...)
+	b = append(b, []byte(nombre_ciudad+" "+cantidad_soldados_rebeldes+" \n")...)
 	errtxt = ioutil.WriteFile(path, b, 0644)
 
 	if errtxt != nil {
