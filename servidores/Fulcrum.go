@@ -86,7 +86,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	}
 
 
-	return &pb.SendReply{Message: "hola"}, nil
+	return &pb.SendReply{Message: "El servidor fulcrum recibio tu mensaje con exito"}, nil
 }
 
 
