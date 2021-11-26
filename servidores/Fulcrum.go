@@ -86,7 +86,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	}
 
 
-	return &pb.SendReply{Ip: "a", Port: "9000"}, nil
+	return &pb.SendReply{Message: "hola"}, nil
 }
 
 
