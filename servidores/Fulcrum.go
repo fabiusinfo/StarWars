@@ -59,15 +59,12 @@ func crearArchivo(path string) {
 func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
 	//aqui implementar la escritura del archivo de texto
-	commando := in.GetCommand()
-	nombre_planeta := in.GetPlanet()
-	nombre_ciudad := in.GetCity()
-	cantidad_soldados_rebeldes := in.GetValue()
+	command := in.GetCommand()
+	planet := in.GetPlanet()
+	city := in.GetCity()
+	soldiers := in.GetValue()
 	var path = "servidores/RP/"+nombre_planeta + ".txt"
-	fmt.Println(commando)
-	fmt.Println(nombre_planeta)
-	fmt.Println(nombre_ciudad)
-	fmt.Println(cantidad_soldados_rebeldes)
+	fmt.Println("Comando recibido: "+command+" "+planet+" "+city+" "+soldiers)
 	
 	crearArchivo(path)
 
@@ -78,13 +75,12 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 		log.Fatal(errtxt)
 	}
 
-	b = append(b, []byte(nombre_ciudad+" "+cantidad_soldados_rebeldes+" \n")...)
+	b = append(b, []byte(planet+" "+city+" "+soldiers+" \n")...)
 	errtxt = ioutil.WriteFile(path, b, 0644)
 
 	if errtxt != nil {
 		log.Fatal(errtxt)
 	}
-
 
 	return &pb.SendReply2{Message: "El servidor fulcrum recibio tu mensaje con exito"}, nil
 }
@@ -110,7 +106,7 @@ func main() {
 
 	}()
 	
-	fmt.Println("Esperando un: oye!")
+	fmt.Println("<Servidor Fulcrum habilitado>")
 	fmt.Scanln(&X)
 
 	//aqui implementar la escritura del archivo de texto
