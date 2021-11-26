@@ -23,6 +23,8 @@ func Interface() []string {
 	var action, command, planet, city, value string
 	var info []string
     flag := true
+	value = ""
+
     for flag {
         fmt.Println("Ingrese el número del comando a usar:")
         fmt.Println("-1- AddCity\n-2- UpdateName\n-3- UpdateNumber\n-4- DeleteCity")
@@ -35,11 +37,14 @@ func Interface() []string {
             fmt.Println("Ingrese -Nombre ciudad-")
             fmt.Scanln(&city)
             
-            fmt.Println("Ingrese -Nuevo valor-") //si no quiere en el 1 agregar nuevo valor es 0
+            fmt.Println("Ingrese -Nuevo valor-")
             fmt.Scanln(&value)
 
 			if action == "1" {
 				command = "AddCity"
+				if value == ""{
+                value = "0"
+            	}
 			} else if action == "2" {
 				command = "UpdateName"
 			} else {
@@ -47,6 +52,7 @@ func Interface() []string {
 			}
 
 			info = append(info, command, planet,city,value)
+			flag = false
 
         } else if action == "4" {
             fmt.Println("Ingrese -Nombre planeta-")
@@ -57,6 +63,7 @@ func Interface() []string {
 
 			value = "0"
 			info = append(info, "DeleteCity", planet,city,value)
+			flag = false
 
         } else {
             fmt.Println("Ingrese un -comando válido-")
