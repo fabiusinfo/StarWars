@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"time"
 
@@ -39,7 +40,21 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
 
-	return &pb.SendReply{Ip: "10.6.43.44", Port: "9000"}, nil
+	var direction string
+	fulcrum1 := "10.6.43.42"
+	fulcrum2 := "10.6.43.43"
+	fulcrum3 := "10.6.43.44"
+
+	rand.Seed(time.Now().UnixNano())
+	id := rand.Int63n(3)
+	if id == 0 {
+		direction = fulcrum1 // maquina 2
+	} else if id == 1 {
+		direction = fulcrum2 // maquina 3
+	} else {
+		direction = fulcrum3 // maquina 4
+	}
+	return &pb.SendReply{Ip: direction, Port: "9000"}, nil
 }
 
 func main() {
