@@ -56,7 +56,7 @@ func crearArchivo(path string) {
 //var delet int = 1
 
 
-func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
+func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
 	//aqui implementar la escritura del archivo de texto
 	commando := in.GetCommand()
