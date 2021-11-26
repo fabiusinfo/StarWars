@@ -21,10 +21,10 @@ type server struct {
 	pb.UnimplementedStarWarsServiceServer
 }
 
-func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
+/*func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
 	return &pb.SendReply2{Message: "Fulcrum recibió tu información con éxito"}, nil
-}
+}*/
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
 
@@ -86,7 +86,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	}
 
 
-	return &pb.SendReply{Message: "El servidor fulcrum recibio tu mensaje con exito"}, nil
+	return &pb.SendReply2{Message: "El servidor fulcrum recibio tu mensaje con exito"}, nil
 }
 
 
