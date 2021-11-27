@@ -55,7 +55,6 @@ func crearArchivo(path string) {
 
 //var delet int = 1
 
-
 func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
 	//aqui implementar la escritura del archivo de texto
@@ -63,9 +62,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	planet := in.GetPlanet()
 	city := in.GetCity()
 	soldiers := in.GetValue()
-	var path = "servidores/RP/"+nombre_planeta + ".txt"
-	fmt.Println("Comando recibido: "+command+" "+planet+" "+city+" "+soldiers)
-	
+	var path = "servidores/RP/" + planet + ".txt"
+	fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + soldiers)
+
 	crearArchivo(path)
 
 	// añadir al texto
@@ -85,10 +84,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	return &pb.SendReply2{Message: "El servidor fulcrum recibio tu mensaje con exito"}, nil
 }
 
-
 func main() {
 	//nos convertios en servidor
-	
+
 	X := "none"
 	go func() {
 		listner, err := net.Listen("tcp", ":9000")
@@ -105,38 +103,37 @@ func main() {
 		}
 
 	}()
-	
+
 	fmt.Println("<Servidor Fulcrum habilitado>")
 	fmt.Scanln(&X)
 
 	//aqui implementar la escritura del archivo de texto
 
-	
-/*
-	comando := "Latierra4 Valpo 8"
-	palabra := strings.Split(comando, " ")
-	nombre_planeta := in.GetPlanet()
-	nombre_ciudad := in.GetCity()
-	cantidad_soldados_rebeldes := in.GetValue()
-	var path = "servidores/RP/"+nombre_planeta + ".txt"
-	fmt.Println(nombre_planeta)
-	fmt.Println(nombre_ciudad)
-	fmt.Println(cantidad_soldados_rebeldes)
-	
-	crearArchivo(path)
+	/*
+		comando := "Latierra4 Valpo 8"
+		palabra := strings.Split(comando, " ")
+		nombre_planeta := in.GetPlanet()
+		nombre_ciudad := in.GetCity()
+		cantidad_soldados_rebeldes := in.GetValue()
+		var path = "servidores/RP/"+nombre_planeta + ".txt"
+		fmt.Println(nombre_planeta)
+		fmt.Println(nombre_ciudad)
+		fmt.Println(cantidad_soldados_rebeldes)
 
-	// añadir al texto
-	b, errtxt := ioutil.ReadFile(path)
+		crearArchivo(path)
 
-	if errtxt != nil {
-		log.Fatal(errtxt)
-	}
+		// añadir al texto
+		b, errtxt := ioutil.ReadFile(path)
 
-	b = append(b, []byte(nombre_ciudad+" "+cantidad_soldados_rebeldes+" \n")...)
-	errtxt = ioutil.WriteFile(path, b, 0644)
+		if errtxt != nil {
+			log.Fatal(errtxt)
+		}
 
-	if errtxt != nil {
-		log.Fatal(errtxt)
-	}
-*/
+		b = append(b, []byte(nombre_ciudad+" "+cantidad_soldados_rebeldes+" \n")...)
+		errtxt = ioutil.WriteFile(path, b, 0644)
+
+		if errtxt != nil {
+			log.Fatal(errtxt)
+		}
+	*/
 }
