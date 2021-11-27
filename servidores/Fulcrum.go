@@ -105,7 +105,23 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 		}
 
 	} else if command == "UpdateNumber" {
-		fmt.Println("hi")
+		input, err := ioutil.ReadFile(path)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		lines := strings.Split(string(input), "\n")
+
+		for i, line := range lines {
+			if strings.Contains(line, city) {
+				lines[i] = planet + " " + city + " " + value
+			}
+		}
+		output := strings.Join(lines, "\n")
+		err = ioutil.WriteFile(path, []byte(output), 0644)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	} else {
 		fmt.Println("hi")
 	}
