@@ -73,7 +73,7 @@ func Interface() []string {
 }
 
 func main() {
-	fmt.Println("Bienvendo Almirante Thrawn al <Registro planetario>.")
+	fmt.Println("Bienvenido Almirante Thrawn al <Registro planetario>.")
 	flag := true
 
 	for flag {

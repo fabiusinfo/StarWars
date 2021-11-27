@@ -74,7 +74,7 @@ func Interface() []string {
 
 
 func main() {
-	fmt.Println("Bienvenda Ahsoka Tano al <Registro planetario>.")
+	fmt.Println("Bienvenida Ahsoka Tano al <Registro planetario>.")
 	flag := true
 
 	for flag {
