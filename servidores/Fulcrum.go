@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"strconv"
 	"strings"
 
 	//"net"
@@ -21,6 +22,9 @@ import (
 type server struct {
 	pb.UnimplementedStarWarsServiceServer
 }
+
+//Global Variables
+var VectorClock []int
 
 /*func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
@@ -56,7 +60,7 @@ func crearArchivo(path string) {
 
 //var delet int = 1
 
-func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
+func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest2) (*pb.SendReply2, error) {
 
 	//aqui implementar la escritura del archivo de texto
 	command := in.GetCommand()
@@ -125,12 +129,21 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	} else {
 		fmt.Println("hi")
 	}
+	if in.GetFulcrum() == "1" {
+		VectorClock[0] += 1
+	} else if in.GetFulcrum() == "2" {
+		VectorClock[1] += 1
+	} else {
+		VectorClock[2] += 1
+	}
 
-	return &pb.SendReply2{Message: "El servidor fulcrum recibio tu mensaje con exito"}, nil
+	return &pb.SendReply2{Message: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
 }
 
 func main() {
 	//nos convertios en servidor
+	//VectorClock := [3]int{0, 0, 0} //{f1-42, f2-43, f3-44}
+	VectorClock = append(VectorClock, 0, 0, 0)
 
 	X := "none"
 	go func() {

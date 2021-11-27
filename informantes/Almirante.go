@@ -22,56 +22,55 @@ type server struct {
 func Interface() []string {
 	var action, command, planet, city, value string
 	var info []string
-    flag := true
+	flag := true
 	value = ""
 
-    for flag {
-        fmt.Println("Ingrese el número del comando a usar:")
-        fmt.Println("-1- AddCity\n-2- UpdateName\n-3- UpdateNumber\n-4- DeleteCity")
-        fmt.Scanln(&action)
-        
-        if action == "1" || action == "2"  || action == "3"{
-            fmt.Println("Ingrese -Nombre planeta-")
-            fmt.Scanln(&planet)
-            
-            fmt.Println("Ingrese -Nombre ciudad-")
-            fmt.Scanln(&city)
-            
-            fmt.Println("Ingrese -Nuevo valor-")
-            fmt.Scanln(&value)
+	for flag {
+		fmt.Println("Ingrese el número del comando a usar:")
+		fmt.Println("-1- AddCity\n-2- UpdateName\n-3- UpdateNumber\n-4- DeleteCity")
+		fmt.Scanln(&action)
+
+		if action == "1" || action == "2" || action == "3" {
+			fmt.Println("Ingrese -Nombre planeta-")
+			fmt.Scanln(&planet)
+
+			fmt.Println("Ingrese -Nombre ciudad-")
+			fmt.Scanln(&city)
+
+			fmt.Println("Ingrese -Nuevo valor-")
+			fmt.Scanln(&value)
 
 			if action == "1" {
 				command = "AddCity"
-				if value == ""{
-                value = "0"
-            	}
+				if value == "" {
+					value = "0"
+				}
 			} else if action == "2" {
 				command = "UpdateName"
 			} else {
 				command = "UpdateNumber"
 			}
 
-			info = append(info, command, planet,city,value)
+			info = append(info, command, planet, city, value)
 			flag = false
 
-        } else if action == "4" {
-            fmt.Println("Ingrese -Nombre planeta-")
-            fmt.Scanln(&planet)
-            
-            fmt.Println("Ingrese -Nombre ciudad-")
-            fmt.Scanln(&city)
+		} else if action == "4" {
+			fmt.Println("Ingrese -Nombre planeta-")
+			fmt.Scanln(&planet)
+
+			fmt.Println("Ingrese -Nombre ciudad-")
+			fmt.Scanln(&city)
 
 			value = "0"
-			info = append(info, "DeleteCity", planet,city,value)
+			info = append(info, "DeleteCity", planet, city, value)
 			flag = false
 
-        } else {
-            fmt.Println("Ingrese un -comando válido-")
-        }
-    }
-    return info
+		} else {
+			fmt.Println("Ingrese un -comando válido-")
+		}
+	}
+	return info
 }
-
 
 func main() {
 	fmt.Println("Bienvendo Almirante Thrawn al <Registro planetario>.")
@@ -91,7 +90,7 @@ func main() {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 
-		r, err := serviceInformant.SendInformationB(ctx, &pb.SendRequest{Command: message[0], Planet: message[1], City: message[2], Value:message[3]})
+		r, err := serviceInformant.SendInformationB(ctx, &pb.SendRequest{Command: message[0], Planet: message[1], City: message[2], Value: message[3]})
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
@@ -110,7 +109,7 @@ func main() {
 		ctx2, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 
-		r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequest{Command: message[0], Planet: message[1], City: message[2], Value:message[3]})
+		r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequest{Command: message[0], Planet: message[1], City: message[2], Value: message[3], r.GetFulcrum()})
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}

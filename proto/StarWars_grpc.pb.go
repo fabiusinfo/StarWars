@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type StarWarsServiceClient interface {
 	ConsultPlanet(ctx context.Context, in *ConsultRequest, opts ...grpc.CallOption) (*ConsultReply, error)
 	SendInformationB(ctx context.Context, in *SendRequest, opts ...grpc.CallOption) (*SendReply, error)
-	SendInformationF(ctx context.Context, in *SendRequest, opts ...grpc.CallOption) (*SendReply2, error)
+	SendInformationF(ctx context.Context, in *SendRequest2, opts ...grpc.CallOption) (*SendReply2, error)
 }
 
 type starWarsServiceClient struct {
@@ -49,7 +49,7 @@ func (c *starWarsServiceClient) SendInformationB(ctx context.Context, in *SendRe
 	return out, nil
 }
 
-func (c *starWarsServiceClient) SendInformationF(ctx context.Context, in *SendRequest, opts ...grpc.CallOption) (*SendReply2, error) {
+func (c *starWarsServiceClient) SendInformationF(ctx context.Context, in *SendRequest2, opts ...grpc.CallOption) (*SendReply2, error) {
 	out := new(SendReply2)
 	err := c.cc.Invoke(ctx, "/grpc.StarWarsService/SendInformationF", in, out, opts...)
 	if err != nil {
@@ -64,7 +64,7 @@ func (c *starWarsServiceClient) SendInformationF(ctx context.Context, in *SendRe
 type StarWarsServiceServer interface {
 	ConsultPlanet(context.Context, *ConsultRequest) (*ConsultReply, error)
 	SendInformationB(context.Context, *SendRequest) (*SendReply, error)
-	SendInformationF(context.Context, *SendRequest) (*SendReply2, error)
+	SendInformationF(context.Context, *SendRequest2) (*SendReply2, error)
 	mustEmbedUnimplementedStarWarsServiceServer()
 }
 
@@ -78,7 +78,7 @@ func (UnimplementedStarWarsServiceServer) ConsultPlanet(context.Context, *Consul
 func (UnimplementedStarWarsServiceServer) SendInformationB(context.Context, *SendRequest) (*SendReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendInformationB not implemented")
 }
-func (UnimplementedStarWarsServiceServer) SendInformationF(context.Context, *SendRequest) (*SendReply2, error) {
+func (UnimplementedStarWarsServiceServer) SendInformationF(context.Context, *SendRequest2) (*SendReply2, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendInformationF not implemented")
 }
 func (UnimplementedStarWarsServiceServer) mustEmbedUnimplementedStarWarsServiceServer() {}
@@ -131,7 +131,7 @@ func _StarWarsService_SendInformationB_Handler(srv interface{}, ctx context.Cont
 }
 
 func _StarWarsService_SendInformationF_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendRequest)
+	in := new(SendRequest2)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -143,7 +143,7 @@ func _StarWarsService_SendInformationF_Handler(srv interface{}, ctx context.Cont
 		FullMethod: "/grpc.StarWarsService/SendInformationF",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StarWarsServiceServer).SendInformationF(ctx, req.(*SendRequest))
+		return srv.(StarWarsServiceServer).SendInformationF(ctx, req.(*SendRequest2))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -40,7 +40,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
 
-	var direction string
+	var direction, fulcrum string
 	fulcrum1 := "10.6.43.42"
 	fulcrum2 := "10.6.43.43"
 	fulcrum3 := "10.6.43.44"
@@ -49,12 +49,15 @@ func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.
 	id := rand.Int63n(3)
 	if id == 0 {
 		direction = fulcrum1 // maquina 2
+		fulcrum = "1"
 	} else if id == 1 {
 		direction = fulcrum2 // maquina 3
+		fulcrum = "2"
 	} else {
 		direction = fulcrum3 // maquina 4
+		fulcrum = "3"
 	}
-	return &pb.SendReply{Ip: direction, Port: "9000"}, nil
+	return &pb.SendReply{Ip: direction, Port: "9000", Fulcrum: fulcrum}, nil
 }
 
 func main() {
