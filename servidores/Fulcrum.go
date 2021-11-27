@@ -93,7 +93,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 
 		for i, line := range lines {
 			if strings.Contains(line, city) {
-				lines[i] = value
+				splitLine := strings.Split(string(line), " ")
+				soldiers := splitLine[2]
+				lines[i] = planet + " " + value + " " + soldiers
 			}
 		}
 		output := strings.Join(lines, "\n")
