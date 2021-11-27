@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"strings"
 
 	//"net"
 	"os"
@@ -61,24 +62,50 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.
 	command := in.GetCommand()
 	planet := in.GetPlanet()
 	city := in.GetCity()
-	soldiers := in.GetValue()
+	value := in.GetValue()
 	var path = "servidores/RP/" + planet + ".txt"
-	fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + soldiers)
+	fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + value)
 
 	crearArchivo(path)
 
-	// añadir al texto
-	b, errtxt := ioutil.ReadFile(path)
+	if command == "AddCity" {
+		// añadir al texto
+		b, errtxt := ioutil.ReadFile(path)
 
-	if errtxt != nil {
-		log.Fatal(errtxt)
-	}
+		if errtxt != nil {
+			log.Fatal(errtxt)
+		}
 
-	b = append(b, []byte(planet+" "+city+" "+soldiers+" \n")...)
-	errtxt = ioutil.WriteFile(path, b, 0644)
+		b = append(b, []byte(planet+" "+city+" "+value+" \n")...)
+		errtxt = ioutil.WriteFile(path, b, 0644)
 
-	if errtxt != nil {
-		log.Fatal(errtxt)
+		if errtxt != nil {
+			log.Fatal(errtxt)
+		}
+	} else if command == "UpdateName" {
+
+		input, err := ioutil.ReadFile(path)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		lines := strings.Split(string(input), "\n")
+
+		for i, line := range lines {
+			if strings.Contains(line, city) {
+				lines[i] = value
+			}
+		}
+		output := strings.Join(lines, "\n")
+		err = ioutil.WriteFile(path, []byte(output), 0644)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+	} else if command == "UpdateNumber" {
+		fmt.Println("hi")
+	} else {
+		fmt.Println("hi")
 	}
 
 	return &pb.SendReply2{Message: "El servidor fulcrum recibio tu mensaje con exito"}, nil
