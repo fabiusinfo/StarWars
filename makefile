@@ -1,18 +1,18 @@
 broker:
 	echo "Ejecutando Broker"
-	go run broker/Broker.go
+	go run middleware/Broker.go
 
 ahsoka:
 	echo "Ejecutando informante Ahsoka"
-	go run informante/Ahsoka.go
+	go run informantes/Ahsoka.go
 
 almirante:
 	echo "Ejecutando informante Almirante Thrawn"
-	go run informante/Almirante.go
+	go run informantes/Almirante.go
 
 leia:
 	echo "Ejecutando princesa Leia"
-	go run leia/Leia.go
+	go run princess/Leia.go
 	
 fulcrum:
 	echo "Ejecutando servidor Fulcrum"
