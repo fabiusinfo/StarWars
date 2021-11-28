@@ -126,8 +126,24 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest2) (*pb
 		if err != nil {
 			log.Fatalln(err)
 		}
-	} else {
-		fmt.Println("hi")
+	} else { //DeleteCity
+		input, err := ioutil.ReadFile(path)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		lines := strings.Split(string(input), "\n")
+
+		for i, line := range lines {
+			if strings.Contains(line, city) {
+				fmt.Println("Aqui borro la linea")
+			}
+		}
+		output := strings.Join(lines, "\n")
+		err = ioutil.WriteFile(path, []byte(output), 0644)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 	if in.GetFulcrum() == "1" {
 		VectorClock[0] += 1
