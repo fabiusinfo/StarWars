@@ -37,12 +37,16 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 }
 
 // Crear archivo
-
 func existeError(err error) bool {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	return (err != nil)
+}
+
+// Borrar elemento de array en posicion index
+func RemoveIndex(s []string, index int) []string {
+    return append(s[:index], s[index+1:]...)
 }
 
 func crearArchivo(path string) {
@@ -57,6 +61,7 @@ func crearArchivo(path string) {
 		defer file.Close()
 	}
 }
+
 
 //var delet int = 1
 
@@ -136,8 +141,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest2) (*pb
 
 		for i, line := range lines {
 			if strings.Contains(line, city) {
-				fmt.Println("Aqui borro la linea")
+				lines = RemoveIndex(lines,i)
 			}
+			break
 		}
 		output := strings.Join(lines, "\n")
 		err = ioutil.WriteFile(path, []byte(output), 0644)
