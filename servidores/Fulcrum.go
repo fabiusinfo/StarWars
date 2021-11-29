@@ -73,7 +73,11 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 	city := in.GetCity()
 	value := in.GetValue()
 	var path = "servidores/RP/" + planet + ".txt"
-	fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + value)
+	if command =="DeleteCity"{
+		fmt.Println("Comando recibido: " + command + " " + planet + " " + city)
+	} else {
+		fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + value)
+	}
 
 	crearArchivo(path)
 
