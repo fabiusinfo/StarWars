@@ -26,10 +26,9 @@ type server struct {
 }
 
 func Interface() []string {
-	var action, command, planet, city, value string
+	var action, command, planet, city string
 	var info []string
 	flag := true
-	value = ""
 
 	for flag {
 		fmt.Println("Ingrese el número del comando a usar:")
@@ -77,6 +76,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		log.Printf("Rebeldes: "+ r.GetRebelds()+"\nReloj: "+r.GetClock())
+		log.Printf("Rebeldes: " + r.GetRebelds() + "\nReloj: " + r.GetClock())
 
+	}
 }
