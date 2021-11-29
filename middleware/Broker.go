@@ -29,16 +29,16 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	serviceSF := pb.NewStarWarsServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := serviceSF.ConsultPlanet(ctx, &pb.ConsultRequest{Message: "holi soy el broker"})
+	r, err := serviceSF.ConsultPlanet(ctx, &pb.ConsultRequest{Command: in.GetCommand(), Planet:in.GetPlanet(), City:in.GetCity()})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
 
 	// ahora esta respuesta se la mandamos a la leia
-	return &pb.ConsultReply{Message: r.GetMessage()}, nil
+	return &pb.ConsultReply{Rebelds: r.GetRebelds(), Clock:r.GetClock()}, nil
 }
 
-func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
+func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequestB) (*pb.SendReplyB, error) {
 
 	var direction, fulcrum string
 	fulcrum1 := "10.6.43.42"
@@ -57,7 +57,7 @@ func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.
 		direction = fulcrum3 // maquina 4
 		fulcrum = "3"
 	}
-	return &pb.SendReply{Ip: direction, Port: "9000", Fulcrum: fulcrum}, nil
+	return &pb.SendReplyB{Ip: direction, Port: "9000", Fulcrum: fulcrum}, nil
 }
 
 func main() {

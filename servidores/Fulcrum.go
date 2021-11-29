@@ -33,7 +33,7 @@ var VectorClock []int
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
 
-	return &pb.ConsultReply{Message: "toma la info del planeta"}, nil
+	return &pb.ConsultReply{Rebelds: "6", Clock:"a|b|c" }, nil
 }
 
 // Crear archivo
@@ -65,7 +65,7 @@ func crearArchivo(path string) {
 
 //var delet int = 1
 
-func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest2) (*pb.SendReply2, error) {
+func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb.SendReplyF, error) {
 
 	//aqui implementar la escritura del archivo de texto
 	command := in.GetCommand()
@@ -142,8 +142,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest2) (*pb
 		for i, line := range lines {
 			if strings.Contains(line, city) {
 				lines = RemoveIndex(lines,i)
+				break
 			}
-			break
+			
 		}
 		output := strings.Join(lines, "\n")
 		err = ioutil.WriteFile(path, []byte(output), 0644)
@@ -159,7 +160,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest2) (*pb
 		VectorClock[2] += 1
 	}
 
-	return &pb.SendReply2{Clock: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
+	return &pb.SendReplyF{Clock: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
 }
 
 func main() {
