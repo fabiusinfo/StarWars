@@ -33,7 +33,7 @@ var VectorClock []int
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
 
-	return &pb.ConsultReply{Message: "toma la info del planeta"}, nil
+	return &pb.ConsultReply{Rebelds: "6", Clock:"a|b|c" }, nil
 }
 
 // Crear archivo
@@ -65,7 +65,7 @@ func crearArchivo(path string) {
 
 //var delet int = 1
 
-func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest2) (*pb.SendReply2, error) {
+func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb.SendReplyF, error) {
 
 	//aqui implementar la escritura del archivo de texto
 	command := in.GetCommand()
