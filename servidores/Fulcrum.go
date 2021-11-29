@@ -159,7 +159,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 		VectorClock[2] += 1
 	}
 
-	return &pb.SendReply2{Clock: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
+	return &pb.SendReplyF{Clock: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
 }
 
 func main() {
