@@ -77,6 +77,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		log.Printf("Rebeldes: "+ r.GetRebelds()+"\nReloj: "+r.GetClock())
+		log.Printf("Rebeldes: " + r.GetRebelds() + "\nReloj: " + r.GetClock())
 
+	}
 }
