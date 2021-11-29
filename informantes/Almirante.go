@@ -17,10 +17,10 @@ import (
 
 type WriteStruct struct {
 	command     string
-	planet      bool
-	city        int32
-	value       int32
-	VectorClock []int
+	planet      string
+	city        string
+	value       string
+	VectorClock string
 	ip          string
 }
 
@@ -127,6 +127,7 @@ func main() {
 			log.Fatalf("could not greet: %v", err)
 		}
 		log.Printf("Greeting: %s", r2.GetClock())
-		//ReadYourWrites.
+
+		ReadYourWrites = append(ReadYourWrites, WriteStruct{message[0], message[1], message[2], message[3], r2.GetClock(), r.GetIp()})
 	}
 }
