@@ -105,8 +105,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		log.Printf("Greeting: %s", r.GetIp())
-		log.Printf("Greeting: %s", r.GetPort())
 
 		//envío al Flucrum
 
@@ -124,7 +122,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		log.Printf("Greeting: %s", r2.GetClock())
 		ReadYourWrites = append(ReadYourWrites, WriteStruct{message[0], message[1], message[2], message[3], r2.GetClock(), r.GetIp()})
 	}
 

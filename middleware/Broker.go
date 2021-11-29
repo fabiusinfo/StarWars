@@ -80,7 +80,7 @@ func main() {
 		}
 
 	}()
-	fmt.Println("Esperando un: oye!")
+	fmt.Println("<Servidor Broker habilitado>")
 	fmt.Scanln(&X)
 
 }
