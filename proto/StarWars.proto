@@ -15,11 +15,14 @@ service StarWarsService {
 
 
 message ConsultRequest {
-    string message = 1;
+    string command = 1;
+    string planet = 2;
+    string city = 3;
 }
 
 message ConsultReply {
-    string message = 1;
+    string rebelds = 1;
+    string clock = 2;
 }
 
 message SendRequest {
@@ -44,6 +47,6 @@ message SendReply {
 }
 
 message SendReply2 {
-    string message = 1;
+    string clock = 1;
 }
 
