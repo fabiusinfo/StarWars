@@ -142,8 +142,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 		for i, line := range lines {
 			if strings.Contains(line, city) {
 				lines = RemoveIndex(lines,i)
+				break
 			}
-			break
+			
 		}
 		output := strings.Join(lines, "\n")
 		err = ioutil.WriteFile(path, []byte(output), 0644)
