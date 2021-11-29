@@ -24,8 +24,6 @@ type WriteStruct struct {
 	ip          string
 }
 
-//Command: message[0], Planet: message[1], City: message[2], Value: message[3]
-
 var ReadYourWrites []WriteStruct
 
 type server struct {
