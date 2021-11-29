@@ -38,7 +38,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	return &pb.ConsultReply{Message: r.GetMessage()}, nil
 }
 
-func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.SendReply, error) {
+func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequestB) (*pb.SendReplyB, error) {
 
 	var direction, fulcrum string
 	fulcrum1 := "10.6.43.42"
@@ -57,7 +57,7 @@ func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequest) (*pb.
 		direction = fulcrum3 // maquina 4
 		fulcrum = "3"
 	}
-	return &pb.SendReply{Ip: direction, Port: "9000", Fulcrum: fulcrum}, nil
+	return &pb.SendReplyB{Ip: direction, Port: "9000", Fulcrum: fulcrum}, nil
 }
 
 func main() {
