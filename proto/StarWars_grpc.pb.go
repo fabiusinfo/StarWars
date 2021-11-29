@@ -19,8 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StarWarsServiceClient interface {
 	ConsultPlanet(ctx context.Context, in *ConsultRequest, opts ...grpc.CallOption) (*ConsultReply, error)
-	SendInformationB(ctx context.Context, in *SendRequest, opts ...grpc.CallOption) (*SendReply, error)
-	SendInformationF(ctx context.Context, in *SendRequest2, opts ...grpc.CallOption) (*SendReply2, error)
+	SendInformationB(ctx context.Context, in *SendRequestB, opts ...grpc.CallOption) (*SendReplyB, error)
+	SendInformationF(ctx context.Context, in *SendRequestF, opts ...grpc.CallOption) (*SendReplyF, error)
 }
 
 type starWarsServiceClient struct {
@@ -40,8 +40,8 @@ func (c *starWarsServiceClient) ConsultPlanet(ctx context.Context, in *ConsultRe
 	return out, nil
 }
 
-func (c *starWarsServiceClient) SendInformationB(ctx context.Context, in *SendRequest, opts ...grpc.CallOption) (*SendReply, error) {
-	out := new(SendReply)
+func (c *starWarsServiceClient) SendInformationB(ctx context.Context, in *SendRequestB, opts ...grpc.CallOption) (*SendReplyB, error) {
+	out := new(SendReplyB)
 	err := c.cc.Invoke(ctx, "/grpc.StarWarsService/SendInformationB", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -49,8 +49,8 @@ func (c *starWarsServiceClient) SendInformationB(ctx context.Context, in *SendRe
 	return out, nil
 }
 
-func (c *starWarsServiceClient) SendInformationF(ctx context.Context, in *SendRequest2, opts ...grpc.CallOption) (*SendReply2, error) {
-	out := new(SendReply2)
+func (c *starWarsServiceClient) SendInformationF(ctx context.Context, in *SendRequestF, opts ...grpc.CallOption) (*SendReplyF, error) {
+	out := new(SendReplyF)
 	err := c.cc.Invoke(ctx, "/grpc.StarWarsService/SendInformationF", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -63,8 +63,8 @@ func (c *starWarsServiceClient) SendInformationF(ctx context.Context, in *SendRe
 // for forward compatibility
 type StarWarsServiceServer interface {
 	ConsultPlanet(context.Context, *ConsultRequest) (*ConsultReply, error)
-	SendInformationB(context.Context, *SendRequest) (*SendReply, error)
-	SendInformationF(context.Context, *SendRequest2) (*SendReply2, error)
+	SendInformationB(context.Context, *SendRequestB) (*SendReplyB, error)
+	SendInformationF(context.Context, *SendRequestF) (*SendReplyF, error)
 	mustEmbedUnimplementedStarWarsServiceServer()
 }
 
@@ -75,10 +75,10 @@ type UnimplementedStarWarsServiceServer struct {
 func (UnimplementedStarWarsServiceServer) ConsultPlanet(context.Context, *ConsultRequest) (*ConsultReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConsultPlanet not implemented")
 }
-func (UnimplementedStarWarsServiceServer) SendInformationB(context.Context, *SendRequest) (*SendReply, error) {
+func (UnimplementedStarWarsServiceServer) SendInformationB(context.Context, *SendRequestB) (*SendReplyB, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendInformationB not implemented")
 }
-func (UnimplementedStarWarsServiceServer) SendInformationF(context.Context, *SendRequest2) (*SendReply2, error) {
+func (UnimplementedStarWarsServiceServer) SendInformationF(context.Context, *SendRequestF) (*SendReplyF, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendInformationF not implemented")
 }
 func (UnimplementedStarWarsServiceServer) mustEmbedUnimplementedStarWarsServiceServer() {}
@@ -113,7 +113,7 @@ func _StarWarsService_ConsultPlanet_Handler(srv interface{}, ctx context.Context
 }
 
 func _StarWarsService_SendInformationB_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendRequest)
+	in := new(SendRequestB)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -125,13 +125,13 @@ func _StarWarsService_SendInformationB_Handler(srv interface{}, ctx context.Cont
 		FullMethod: "/grpc.StarWarsService/SendInformationB",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StarWarsServiceServer).SendInformationB(ctx, req.(*SendRequest))
+		return srv.(StarWarsServiceServer).SendInformationB(ctx, req.(*SendRequestB))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _StarWarsService_SendInformationF_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendRequest2)
+	in := new(SendRequestF)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -143,7 +143,7 @@ func _StarWarsService_SendInformationF_Handler(srv interface{}, ctx context.Cont
 		FullMethod: "/grpc.StarWarsService/SendInformationF",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StarWarsServiceServer).SendInformationF(ctx, req.(*SendRequest2))
+		return srv.(StarWarsServiceServer).SendInformationF(ctx, req.(*SendRequestF))
 	}
 	return interceptor(ctx, in, info, handler)
 }

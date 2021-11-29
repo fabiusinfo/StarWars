@@ -15,6 +15,19 @@ import (
 	"google.golang.org/grpc"
 )
 
+type WriteStruct struct {
+	command     string
+	planet      bool
+	city        int32
+	value       int32
+	VectorClock []int
+	ip          string
+}
+
+//Command: message[0], Planet: message[1], City: message[2], Value: message[3]
+
+var ReadYourWrites []WriteStruct
+
 type server struct {
 	pb.UnimplementedStarWarsServiceServer
 }
@@ -90,7 +103,7 @@ func main() {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 
-		r, err := serviceInformant.SendInformationB(ctx, &pb.SendRequest{Command: message[0], Planet: message[1], City: message[2], Value: message[3]})
+		r, err := serviceInformant.SendInformationB(ctx, &pb.SendRequestB{Command: message[0], Planet: message[1], City: message[2], Value: message[3]})
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
@@ -109,10 +122,11 @@ func main() {
 		ctx2, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 
-		r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequest{Command: message[0], Planet: message[1], City: message[2], Value: message[3], r.GetFulcrum()})
+		r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequestF{Command: message[0], Planet: message[1], City: message[2], Value: message[3], Fulcrum: r.GetFulcrum()})
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		log.Printf("Greeting: %s", r2.GetMessage())
+		log.Printf("Greeting: %s", r2.GetClock())
+		//ReadYourWrites.
 	}
 }
