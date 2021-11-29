@@ -21,6 +21,17 @@ import (
 	//"google.golang.org/grpc"
 )
 
+type ReadStruct struct {
+	command     string
+	planet      string
+	city        string
+	Rebelds     string
+	VectorClock string
+	//ip          string
+}
+
+var MonotonicReads []ReadStruct
+
 type server struct {
 	pb.UnimplementedStarWarsServiceServer
 }
@@ -78,5 +89,7 @@ func main() {
 		}
 		log.Printf("Rebeldes: " + r.GetRebelds() + "\nReloj: " + r.GetClock())
 
+		MonotonicReads = append(MonotonicReads, ReadStruct{message[0], message[1], message[2], r.GetRebelds(), r.GetClock() /*, r.GetIp()*/})
+		fmt.Println(MonotonicReads)
 	}
 }
