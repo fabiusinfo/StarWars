@@ -96,6 +96,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 	city := in.GetCity()
 	value := in.GetValue()
 	var path = "servidores/RP/" + planet + ".txt"
+
+	var path_log = "servidores/RP/log_" + planet + ".txt"
+
 	if command == "DeleteCity" {
 		fmt.Println("Comando recibido: " + command + " " + planet + " " + city)
 	} else {
@@ -103,6 +106,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 	}
 
 	crearArchivo(path)
+	crearArchivo(path_log)
 
 	if command == "AddCity" {
 		// añadir al texto
@@ -118,6 +122,21 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 		if errtxt != nil {
 			log.Fatal(errtxt)
 		}
+
+		// añadir al log
+		bl, errtxtl := ioutil.ReadFile(path_log)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
+		}
+
+		bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...)
+		errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
+		}
+
 	} else if command == "UpdateName" {
 
 		input, err := ioutil.ReadFile(path)
@@ -140,6 +159,20 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 			log.Fatalln(err)
 		}
 
+		// añadir al log
+		bl, errtxtl := ioutil.ReadFile(path_log)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
+		}
+
+		bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...) //value es la nueva ciudd
+		errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
+		}
+
 	} else if command == "UpdateNumber" {
 		input, err := ioutil.ReadFile(path)
 		if err != nil {
@@ -157,6 +190,20 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 		err = ioutil.WriteFile(path, []byte(output), 0644)
 		if err != nil {
 			log.Fatalln(err)
+		}
+
+		// añadir al log
+		bl, errtxtl := ioutil.ReadFile(path_log)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
+		}
+
+		bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...)
+		errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
 		}
 	} else { //DeleteCity
 		input, err := ioutil.ReadFile(path)
@@ -177,6 +224,19 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 		err = ioutil.WriteFile(path, []byte(output), 0644)
 		if err != nil {
 			log.Fatalln(err)
+		}
+		// añadir al log
+		bl, errtxtl := ioutil.ReadFile(path_log)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
+		}
+
+		bl = append(bl, []byte(command+" "+planet+" "+city+" \n")...)
+		errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+
+		if errtxtl != nil {
+			log.Fatal(errtxtl)
 		}
 	}
 	if in.GetFulcrum() == "1" {
