@@ -32,8 +32,32 @@ var VectorClock []int
 }*/
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
+	//command := in.GetCommand()
+	planet := in.GetPlanet()
+	city := in.GetCity()
+	soldiers := ""
+	var path = "servidores/RP/" + planet + ".txt"
+	input, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	return &pb.ConsultReply{Rebelds: "6", Clock:"a|b|c" }, nil
+	lines := strings.Split(string(input), "\n")
+
+	for _, line := range lines {
+		if strings.Contains(line, city) {
+			splitLine := strings.Split(string(line), " ")
+			soldiers = splitLine[2]
+
+		}
+	}
+	output := strings.Join(lines, "\n")
+	err = ioutil.WriteFile(path, []byte(output), 0644)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return &pb.ConsultReply{Rebelds: soldiers, Clock: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
 }
 
 // Crear archivo
@@ -46,7 +70,7 @@ func existeError(err error) bool {
 
 // Borrar elemento de array en posicion index
 func RemoveIndex(s []string, index int) []string {
-    return append(s[:index], s[index+1:]...)
+	return append(s[:index], s[index+1:]...)
 }
 
 func crearArchivo(path string) {
@@ -62,7 +86,6 @@ func crearArchivo(path string) {
 	}
 }
 
-
 //var delet int = 1
 
 func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb.SendReplyF, error) {
@@ -73,7 +96,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 	city := in.GetCity()
 	value := in.GetValue()
 	var path = "servidores/RP/" + planet + ".txt"
-	if command =="DeleteCity"{
+	if command == "DeleteCity" {
 		fmt.Println("Comando recibido: " + command + " " + planet + " " + city)
 	} else {
 		fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + value)
@@ -145,10 +168,10 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 
 		for i, line := range lines {
 			if strings.Contains(line, city) {
-				lines = RemoveIndex(lines,i)
+				lines = RemoveIndex(lines, i)
 				break
 			}
-			
+
 		}
 		output := strings.Join(lines, "\n")
 		err = ioutil.WriteFile(path, []byte(output), 0644)
