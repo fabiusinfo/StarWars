@@ -23,8 +23,15 @@ type server struct {
 	pb.UnimplementedStarWarsServiceServer
 }
 
+type VectorClock struct {
+	planet string
+	X      int
+	Y      int
+	Z      int
+}
+
 //Global Variables
-var VectorClock []int
+var VectorClock_list []VectorClock
 
 /*func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
@@ -57,7 +64,16 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 		log.Fatalln(err)
 	}
 
-	return &pb.ConsultReply{Rebelds: soldiers, Clock: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
+	aux := 0
+	for i := 0; i < len(VectorClock_list); i++ {
+		if VectorClock_list[i].planet == planet {
+			aux = i
+			break
+
+		}
+	}
+
+	return &pb.ConsultReply{Rebelds: soldiers, Clock: strconv.Itoa(VectorClock_list[aux].X) + " " + strconv.Itoa(VectorClock_list[aux].Y) + " " + strconv.Itoa(VectorClock_list[aux].Z)}, nil
 }
 
 // Crear archivo
@@ -73,7 +89,21 @@ func RemoveIndex(s []string, index int) []string {
 	return append(s[:index], s[index+1:]...)
 }
 
-func crearArchivo(path string) {
+func crearArchivo(path string, planet string) {
+	//Verifica que el archivo existe
+	var _, err = os.Stat(path)
+	//Crea el archivo si no existe
+	if os.IsNotExist(err) {
+		var file, err = os.Create(path)
+		if existeError(err) {
+			return
+		}
+		defer file.Close()
+		VectorClock_list = append(VectorClock_list, VectorClock{planet, 0, 0, 0})
+	}
+}
+
+func crearArchivo_log(path string) {
 	//Verifica que el archivo existe
 	var _, err = os.Stat(path)
 	//Crea el archivo si no existe
@@ -105,8 +135,8 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 		fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + value)
 	}
 
-	crearArchivo(path)
-	crearArchivo(path_log)
+	crearArchivo(path, planet)
+	crearArchivo_log(path_log)
 
 	if command == "AddCity" {
 		// añadir al texto
@@ -239,21 +269,29 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 			log.Fatal(errtxtl)
 		}
 	}
-	if in.GetFulcrum() == "1" {
-		VectorClock[0] += 1
-	} else if in.GetFulcrum() == "2" {
-		VectorClock[1] += 1
-	} else {
-		VectorClock[2] += 1
+	aux := 0
+	for i := 0; i < len(VectorClock_list); i++ {
+		if VectorClock_list[i].planet == planet {
+			if in.GetFulcrum() == "1" {
+				VectorClock_list[i].X += 1
+			} else if in.GetFulcrum() == "2" {
+				VectorClock_list[i].Y += 1
+			} else {
+				VectorClock_list[i].Z += 1
+			}
+			aux = i
+			break
+
+		}
 	}
 
-	return &pb.SendReplyF{Clock: strconv.Itoa(VectorClock[0]) + " " + strconv.Itoa(VectorClock[1]) + " " + strconv.Itoa(VectorClock[2])}, nil
+	return &pb.SendReplyF{Clock: strconv.Itoa(VectorClock_list[aux].X) + " " + strconv.Itoa(VectorClock_list[aux].Y) + " " + strconv.Itoa(VectorClock_list[aux].Z)}, nil
 }
 
 func main() {
 	//nos convertios en servidor
 	//VectorClock := [3]int{0, 0, 0} //{f1-42, f2-43, f3-44}
-	VectorClock = append(VectorClock, 0, 0, 0)
+	//VectorClock = append(VectorClock, 0, 0, 0)
 
 	X := "none"
 	go func() {
