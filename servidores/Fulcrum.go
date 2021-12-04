@@ -3,6 +3,7 @@ package main
 
 import (
 	//"context"
+	"bufio"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -298,58 +299,66 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 	return &pb.SendReplyF{Clock: strconv.Itoa(VectorClock_list[aux].X) + " " + strconv.Itoa(VectorClock_list[aux].Y) + " " + strconv.Itoa(VectorClock_list[aux].Z)}, nil
 }
 
+
+
+func propagation(){
+
+	for i := 0; i < len(VectorClock_list); i++ {
+		readFile, err := os.Open("RP/log_"+ VectorClock_list[i].planet)
+		if err != nil {
+				log.Fatal(err)
+		}
+		fileScanner := bufio.NewScanner(readFile)
+		fileScanner.Split(bufio.ScanLines)
+		var lines []string   // aqui se guardan las lineas
+		for fileScanner.Scan() {
+				lines = append(lines, fileScanner.Text())
+		}
+		readFile.Close()
+		for _, line := range lines {
+				og_command := strings.Split(line, " ") //separa el comando en :accion que realiza, planeta, ciudad, y valor (que puede ser nuevo nombre de ciudad o numero de solados)
+				command := og_command[0]  
+				planet := og_command[1]  
+				city := og_command[2]
+				if (command == "DeleteCity"){
+					value := 0
+				}else{
+					value := og_command[3]
+				}
+
+		}
+	
+	}
+	
+
+
+}
+
+
+
 func main() {
-	//nos convertios en servidor
-	//VectorClock := [3]int{0, 0, 0} //{f1-42, f2-43, f3-44}
-	//VectorClock = append(VectorClock, 0, 0, 0)
+//nos convertios en servidor
+	//VectorClock := [3]int{0, 0, 0} //{f1-42, f-43, f3-44}
+	//VectorClock  append(VectorClock, 0, 0, 0)
 
 	X := "none"
 	go func() {
-		listner, err := net.Listen("tcp", ":9000")
+		listener, err := net.Listen("tcp", ":9000")
 
 		if err != nil {
-			panic("cannot connect with server " + err.Error())
+			panic("cannot connect with servr " + err.Error())
 		}
 
 		serv := grpc.NewServer()
 		pb.RegisterStarWarsServiceServer(serv, &server{})
-		if err = serv.Serve(listner); err != nil {
-			panic("cannot initialize the server" + err.Error())
+		if err = serv.Serve(listener); err != nil {
+			panic("cannot initialize the server" +err.Error())
 
 		}
 
 	}()
 
-	fmt.Println("<Servidor Fulcrum habilitado>")
+fmt.Println("<Servidor Fulcrum habilitado>")
 	fmt.Scanln(&X)
 
-	//aqui implementar la escritura del archivo de texto
-
-	/*
-		comando := "Latierra4 Valpo 8"
-		palabra := strings.Split(comando, " ")
-		nombre_planeta := in.GetPlanet()
-		nombre_ciudad := in.GetCity()
-		cantidad_soldados_rebeldes := in.GetValue()
-		var path = "servidores/RP/"+nombre_planeta + ".txt"
-		fmt.Println(nombre_planeta)
-		fmt.Println(nombre_ciudad)
-		fmt.Println(cantidad_soldados_rebeldes)
-
-		crearArchivo(path)
-
-		// añadir al texto
-		b, errtxt := ioutil.ReadFile(path)
-
-		if errtxt != nil {
-			log.Fatal(errtxt)
-		}
-
-		b = append(b, []byte(nombre_ciudad+" "+cantidad_soldados_rebeldes+" \n")...)
-		errtxt = ioutil.WriteFile(path, b, 0644)
-
-		if errtxt != nil {
-			log.Fatal(errtxt)
-		}
-	*/
 }
