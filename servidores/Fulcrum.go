@@ -376,6 +376,9 @@ func main() {
 		}
 
 	}()
+	fmt.Println("<Servidor Fulcrum habilitado> ingresa una letra para ejecutar la propagación")
+	fmt.Scanln(&X)
+	propagation()
 
 	fmt.Println("<Servidor Fulcrum habilitado>")
 	fmt.Scanln(&X)
