@@ -21,6 +21,7 @@ type StarWarsServiceClient interface {
 	ConsultPlanet(ctx context.Context, in *ConsultRequest, opts ...grpc.CallOption) (*ConsultReply, error)
 	SendInformationB(ctx context.Context, in *SendRequestB, opts ...grpc.CallOption) (*SendReplyB, error)
 	SendInformationF(ctx context.Context, in *SendRequestF, opts ...grpc.CallOption) (*SendReplyF, error)
+	Identify(ctx context.Context, in *SendIp, opts ...grpc.CallOption) (*IpRecieve, error)
 }
 
 type starWarsServiceClient struct {
@@ -58,6 +59,15 @@ func (c *starWarsServiceClient) SendInformationF(ctx context.Context, in *SendRe
 	return out, nil
 }
 
+func (c *starWarsServiceClient) Identify(ctx context.Context, in *SendIp, opts ...grpc.CallOption) (*IpRecieve, error) {
+	out := new(IpRecieve)
+	err := c.cc.Invoke(ctx, "/grpc.StarWarsService/Identify", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StarWarsServiceServer is the server API for StarWarsService service.
 // All implementations must embed UnimplementedStarWarsServiceServer
 // for forward compatibility
@@ -65,6 +75,7 @@ type StarWarsServiceServer interface {
 	ConsultPlanet(context.Context, *ConsultRequest) (*ConsultReply, error)
 	SendInformationB(context.Context, *SendRequestB) (*SendReplyB, error)
 	SendInformationF(context.Context, *SendRequestF) (*SendReplyF, error)
+	Identify(context.Context, *SendIp) (*IpRecieve, error)
 	mustEmbedUnimplementedStarWarsServiceServer()
 }
 
@@ -80,6 +91,9 @@ func (UnimplementedStarWarsServiceServer) SendInformationB(context.Context, *Sen
 }
 func (UnimplementedStarWarsServiceServer) SendInformationF(context.Context, *SendRequestF) (*SendReplyF, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendInformationF not implemented")
+}
+func (UnimplementedStarWarsServiceServer) Identify(context.Context, *SendIp) (*IpRecieve, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Identify not implemented")
 }
 func (UnimplementedStarWarsServiceServer) mustEmbedUnimplementedStarWarsServiceServer() {}
 
@@ -148,6 +162,24 @@ func _StarWarsService_SendInformationF_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StarWarsService_Identify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendIp)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StarWarsServiceServer).Identify(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.StarWarsService/Identify",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StarWarsServiceServer).Identify(ctx, req.(*SendIp))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // StarWarsService_ServiceDesc is the grpc.ServiceDesc for StarWarsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -166,6 +198,10 @@ var StarWarsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendInformationF",
 			Handler:    _StarWarsService_SendInformationF_Handler,
+		},
+		{
+			MethodName: "Identify",
+			Handler:    _StarWarsService_Identify_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -33,6 +33,16 @@ type VectorClock struct {
 //Global Variables
 var VectorClock_list []VectorClock
 
+var ip1, ip2 string
+
+func (s *server) Identify(ctx context.Context, in *pb.SendIp) (*pb.IpRecieve, error) {
+
+	ip1 = in.GetIp1()
+	ip2 = in.GetIp2()
+
+	return &pb.IpRecieve{Message: "recibido"}, nil
+}
+
 /*func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
 	return &pb.SendReply2{Message: "Fulcrum recibió tu información con éxito"}, nil

@@ -11,6 +11,17 @@ service StarWarsService {
 
     rpc SendInformationF(SendRequestF) returns (SendReplyF) {}
 
+    rpc Identify (SendIp) returns (IpRecieve) {}
+
+}
+
+message SendIp {
+    string ip1 = 1;
+    string ip2 = 2;
+}
+
+message IpRecieve {
+    string message = 1;
 }
 
 
