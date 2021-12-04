@@ -118,7 +118,7 @@ func main() {
 		ctx2, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 
-		r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequestF{Command: message[0], Planet: message[1], City: message[2], Value: message[3], Fulcrum: r.GetFulcrum()})
+		r2, err := serviceInformant2.SendInformationF(ctx2, &pb.SendRequestF{Command: message[0], Planet: message[1], City: message[2], Value: message[3]})
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}

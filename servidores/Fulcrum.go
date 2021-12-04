@@ -34,15 +34,16 @@ type VectorClock struct {
 //Global Variables
 var VectorClock_list []VectorClock
 
-var ip1, ip2 string
+var ip, ip1, ip2 string
 
 func (s *server) Identify(ctx context.Context, in *pb.SendIp) (*pb.IpRecieve, error) {
-
+	ip = in.GetIp()
 	ip1 = in.GetIp1()
 	ip2 = in.GetIp2()
 
 	return &pb.IpRecieve{Message: "recibido"}, nil
 }
+
 
 /*func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
 
@@ -283,9 +284,9 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 	aux := 0
 	for i := 0; i < len(VectorClock_list); i++ {
 		if VectorClock_list[i].planet == planet {
-			if in.GetFulcrum() == "1" {
+			if ip1 == "10.6.43.42" {
 				VectorClock_list[i].X += 1
-			} else if in.GetFulcrum() == "2" {
+			} else if ip1 == "10.6.43.43" {
 				VectorClock_list[i].Y += 1
 			} else {
 				VectorClock_list[i].Z += 1
@@ -302,29 +303,51 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 
 
 func propagation(){
-
+	var ipe string
 	for i := 0; i < len(VectorClock_list); i++ {
 		readFile, err := os.Open("RP/log_"+ VectorClock_list[i].planet)
 		if err != nil {
-				log.Fatal(err)
+			log.Fatal(err)
 		}
 		fileScanner := bufio.NewScanner(readFile)
 		fileScanner.Split(bufio.ScanLines)
 		var lines []string   // aqui se guardan las lineas
 		for fileScanner.Scan() {
-				lines = append(lines, fileScanner.Text())
+			lines = append(lines, fileScanner.Text())
 		}
 		readFile.Close()
 		for _, line := range lines {
-				og_command := strings.Split(line, " ") //separa el comando en :accion que realiza, planeta, ciudad, y valor (que puede ser nuevo nombre de ciudad o numero de solados)
-				command := og_command[0]  
-				planet := og_command[1]  
-				city := og_command[2]
-				if (command == "DeleteCity"){
-					value := 0
-				}else{
-					value := og_command[3]
+			og_command := strings.Split(line, " ") //separa el comando en :accion que realiza, planeta, ciudad, y valor (que puede ser nuevo nombre de ciudad o numero de solados)
+			command := og_command[0]  
+			planet := og_command[1]  
+			city := og_command[2]
+			if (command == "DeleteCity"){
+				value := 0
+			}else{
+				value := og_command[3]
+			}
+			for i := 0; i < 2; i++ {
+				if i == 0 {
+					ipe = ip1
+				} else {
+					ipe = ip2
 				}
+			
+				conn, err := grpc.Dial(ipe+":9000", grpc.WithInsecure())
+			
+				if err != nil {
+					panic("cannot connect with server " + err.Error())
+				}
+				servicePropagation := pb.NewStarWarsServiceClient(conn)
+			
+				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				defer cancel()
+			
+				r, errr := serviceInformant2.SendInformationF(ctx, &pb.SendRequestF{Command: command, Planet: planet, City: city, Value: value})
+				if err != nil {
+					log.Fatalf("could not greet: %v", errr)
+				}
+			}
 
 		}
 	

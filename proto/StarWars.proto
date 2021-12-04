@@ -16,8 +16,9 @@ service StarWarsService {
 }
 
 message SendIp {
-    string ip1 = 1;
-    string ip2 = 2;
+    string ip = 1;
+    string ip1 = 2;
+    string ip2 = 3;
 }
 
 message IpRecieve {
@@ -48,13 +49,11 @@ message SendRequestF {
     string planet = 2;
     string city = 3;
     string value = 4;
-    string fulcrum = 5;
 }
 
 message SendReplyB {
     string ip = 1;
     string port = 2;
-    string fulcrum = 3;
 }
 
 message SendReplyF {
