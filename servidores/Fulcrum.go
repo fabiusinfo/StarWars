@@ -304,7 +304,7 @@ func propagation() {
 	var ipe string
 	var value string
 	for i := 0; i < len(VectorClock_list); i++ {
-		readFile, err := os.Open("RP/log_" + VectorClock_list[i].planet)
+		readFile, err := os.Open("servidores/RP/log_" + VectorClock_list[i].planet)
 		if err != nil {
 			log.Fatal(err)
 		}
