@@ -452,10 +452,12 @@ func main() {
 		}
 
 	}()
-	fmt.Println("<Servidor Fulcrum habilitado> ingresa una letra para ejecutar la propagación")
-	fmt.Scanln(&X)
+	
 	go func() {
+		fmt.Println("<Servidor Fulcrum habilitado> ingresa una letra para ejecutar la propagación")
+		fmt.Scanln(&X)
 		if ip == "10.6.43.42" {
+			//leer log de registro, vaciar log y planet.txt y enviar en commands
 
 			conn, err := grpc.Dial("10.6.43.43:9000", grpc.WithInsecure())
 
