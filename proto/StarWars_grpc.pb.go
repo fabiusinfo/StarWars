@@ -22,6 +22,7 @@ type StarWarsServiceClient interface {
 	SendInformationB(ctx context.Context, in *SendRequestB, opts ...grpc.CallOption) (*SendReplyB, error)
 	SendInformationF(ctx context.Context, in *SendRequestF, opts ...grpc.CallOption) (*SendReplyF, error)
 	Identify(ctx context.Context, in *SendIp, opts ...grpc.CallOption) (*IpRecieve, error)
+	FulcrumComunication(ctx context.Context, in *CommandsRequest, opts ...grpc.CallOption) (*CommandsReply, error)
 }
 
 type starWarsServiceClient struct {
@@ -68,6 +69,15 @@ func (c *starWarsServiceClient) Identify(ctx context.Context, in *SendIp, opts .
 	return out, nil
 }
 
+func (c *starWarsServiceClient) FulcrumComunication(ctx context.Context, in *CommandsRequest, opts ...grpc.CallOption) (*CommandsReply, error) {
+	out := new(CommandsReply)
+	err := c.cc.Invoke(ctx, "/grpc.StarWarsService/FulcrumComunication", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StarWarsServiceServer is the server API for StarWarsService service.
 // All implementations must embed UnimplementedStarWarsServiceServer
 // for forward compatibility
@@ -76,6 +86,7 @@ type StarWarsServiceServer interface {
 	SendInformationB(context.Context, *SendRequestB) (*SendReplyB, error)
 	SendInformationF(context.Context, *SendRequestF) (*SendReplyF, error)
 	Identify(context.Context, *SendIp) (*IpRecieve, error)
+	FulcrumComunication(context.Context, *CommandsRequest) (*CommandsReply, error)
 	mustEmbedUnimplementedStarWarsServiceServer()
 }
 
@@ -94,6 +105,9 @@ func (UnimplementedStarWarsServiceServer) SendInformationF(context.Context, *Sen
 }
 func (UnimplementedStarWarsServiceServer) Identify(context.Context, *SendIp) (*IpRecieve, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Identify not implemented")
+}
+func (UnimplementedStarWarsServiceServer) FulcrumComunication(context.Context, *CommandsRequest) (*CommandsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FulcrumComunication not implemented")
 }
 func (UnimplementedStarWarsServiceServer) mustEmbedUnimplementedStarWarsServiceServer() {}
 
@@ -180,6 +194,24 @@ func _StarWarsService_Identify_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StarWarsService_FulcrumComunication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommandsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StarWarsServiceServer).FulcrumComunication(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.StarWarsService/FulcrumComunication",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StarWarsServiceServer).FulcrumComunication(ctx, req.(*CommandsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // StarWarsService_ServiceDesc is the grpc.ServiceDesc for StarWarsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -202,6 +234,10 @@ var StarWarsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Identify",
 			Handler:    _StarWarsService_Identify_Handler,
+		},
+		{
+			MethodName: "FulcrumComunication",
+			Handler:    _StarWarsService_FulcrumComunication_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

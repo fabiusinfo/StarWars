@@ -13,7 +13,18 @@ service StarWarsService {
 
     rpc Identify (SendIp) returns (IpRecieve) {}
 
+    rpc FulcrumComunication (CommandsRequest) returns (CommandsReply) {}
+
 }
+message CommandsRequest{
+    string commands = 1;
+    int32 cont = 5;
+}
+
+message CommandsReply{
+    string message = 1;
+}
+
 
 message SendIp {
     string ip = 1;

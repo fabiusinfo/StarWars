@@ -34,7 +34,7 @@ type VectorClock struct {
 
 //Global Variables
 var VectorClock_list []VectorClock
-
+var GlobalCont int32
 var ip, ip1, ip2 string
 
 func (s *server) Identify(ctx context.Context, in *pb.SendIp) (*pb.IpRecieve, error) {
@@ -45,10 +45,86 @@ func (s *server) Identify(ctx context.Context, in *pb.SendIp) (*pb.IpRecieve, er
 	return &pb.IpRecieve{Message: "recibido"}, nil
 }
 
-/*func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequest) (*pb.SendReply2, error) {
+func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest) (*pb.CommandsReply, error) {
+	text:=in.GetCommands()
+	cont:=in.GetCont()
+	//acá leer el texto y escribir en el log de registros y archivo de texto de los planetas
+
+	//crear mensaje que se enviará al siguiente fulcrum
+
+	if cont !=3 {
+		if ip == "10.6.43.42" {
+
+			conn, err := grpc.Dial("10.6.43.43:9000", grpc.WithInsecure())
+	
+			if err != nil {
+				panic("cannot connect with server " + err.Error())
+			}
+			servicePropagation := pb.NewStarWarsServiceClient(conn)
+	
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+	
+			_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands:"acá va el mensaje", Cont: in.GetCont()+1})
+			if err != nil {
+				log.Fatalf("could not greet: %v", errr)
+			}
+
+
+		}else if (ip =="10.6.43.43"){
+			conn, err := grpc.Dial("10.6.43.44:9000", grpc.WithInsecure())
+	
+			if err != nil {
+				panic("cannot connect with server " + err.Error())
+			}
+			servicePropagation := pb.NewStarWarsServiceClient(conn)
+	
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+	
+			_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: , Cont: in.GetCont()+1})
+			if err != nil {
+				log.Fatalf("could not greet: %v", errr)
+			}
+
+		}else{
+			var ipe string
+			for i=0; i<2 ; i++ {
+				if (i==0){
+					ipe="10.6.43.42"
+				}
+				else{
+					ipe="10.6.43.43"
+				}
+				conn, err := grpc.Dial(ipe+":9000", grpc.WithInsecure())
+	
+				if err != nil {
+					panic("cannot connect with server " + err.Error())
+				}
+				servicePropagation := pb.NewStarWarsServiceClient(conn)
+		
+				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				defer cancel()
+		
+				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: , Cont: in.GetCont()+1})
+				if err != nil {
+					log.Fatalf("could not greet: %v", errr)
+				}
+			}
+
+		
+			
+		}
+				//acá vaciar archivo de texto y log de registro solo si es fulcrum 1 y 2
+	}
+	
+	
+	
+	
+
 
 	return &pb.SendReply2{Message: "Fulcrum recibió tu información con éxito"}, nil
-}*/
+}
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
 	//command := in.GetCommand()
@@ -304,7 +380,7 @@ func propagation() {
 	var ipe string
 	var value string
 	for i := 0; i < len(VectorClock_list); i++ {
-		readFile, err := os.Open("servidores/RP/log_" + VectorClock_list[i].planet+".txt")
+		readFile, err := os.Open("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -378,8 +454,25 @@ func main() {
 	}()
 	fmt.Println("<Servidor Fulcrum habilitado> ingresa una letra para ejecutar la propagación")
 	fmt.Scanln(&X)
-	propagation()
+	go func() {
+		if ip == "10.6.43.42" {
 
+			conn, err := grpc.Dial("10.6.43.43:9000", grpc.WithInsecure())
+
+			if err != nil {
+				panic("cannot connect with server " + err.Error())
+			}
+			servicePropagation := pb.NewStarWarsServiceClient(conn)
+
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+
+			_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: , Cont: 1})
+			if err != nil {
+				log.Fatalf("could not greet: %v", errr)
+			}
+	}
+		}()
 	fmt.Println("<Servidor Fulcrum habilitado>")
 	fmt.Scanln(&X)
 
