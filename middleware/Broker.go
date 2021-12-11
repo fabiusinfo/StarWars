@@ -22,20 +22,36 @@ type server struct {
 }
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
+	direction := ""
+	rebels := ""
+	clock := ""
+	for i := 0; i < 3; i++ {
+		if i == 0 {
+			direction = "10.6.43.44"
+		} else if i == 1 {
+			direction = "10.6.43.42"
+		} else {
+			direction = "10.6.43.43"
+		}
+		conn, err := grpc.Dial(direction+":9000", grpc.WithInsecure())
+		serviceSF := pb.NewStarWarsServiceClient(conn)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		r, err := serviceSF.ConsultPlanet(ctx, &pb.ConsultRequest{Command: in.GetCommand(), Planet: in.GetPlanet(), City: in.GetCity()})
+		if err != nil {
+			log.Fatalf("could not greet: %v", err)
+		}
 
-	// alo fulcrum paha toa la info
-	direction := "10.6.43.44"
-	conn, err := grpc.Dial(direction+":9000", grpc.WithInsecure())
-	serviceSF := pb.NewStarWarsServiceClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	r, err := serviceSF.ConsultPlanet(ctx, &pb.ConsultRequest{Command: in.GetCommand(), Planet: in.GetPlanet(), City: in.GetCity()})
-	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		if r.GetRebelds() != "none" {
+			rebels = r.GetRebelds()
+			clock = r.GetClock()
+			break
+		}
 	}
+	// alo fulcrum paha toa la info
 
 	// ahora esta respuesta se la mandamos a la leia
-	return &pb.ConsultReply{Rebelds: r.GetRebelds(), Clock: r.GetClock()}, nil
+	return &pb.ConsultReply{Rebelds: rebels, Clock: clock}, nil
 }
 
 func (s *server) SendInformationB(ctx context.Context, in *pb.SendRequestB) (*pb.SendReplyB, error) {

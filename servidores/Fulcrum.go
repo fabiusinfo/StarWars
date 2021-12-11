@@ -326,7 +326,8 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	//command := in.GetCommand()
 	planet := in.GetPlanet()
 	city := in.GetCity()
-	soldiers := ""
+	soldiers := "none"
+	VectorClock := "none"
 	var path = "servidores/RP/" + planet + ".txt"
 	input, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -352,12 +353,13 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	for i := 0; i < len(VectorClock_list); i++ {
 		if VectorClock_list[i].planet == planet {
 			aux = i
+			VectorClock = strconv.Itoa(VectorClock_list[aux].X) + " " + strconv.Itoa(VectorClock_list[aux].Y) + " " + strconv.Itoa(VectorClock_list[aux].Z)
 			break
 
 		}
 	}
 
-	return &pb.ConsultReply{Rebelds: soldiers, Clock: strconv.Itoa(VectorClock_list[aux].X) + " " + strconv.Itoa(VectorClock_list[aux].Y) + " " + strconv.Itoa(VectorClock_list[aux].Z)}, nil
+	return &pb.ConsultReply{Rebelds: soldiers, Clock: VectorClock}, nil
 }
 
 // Crear archivo
