@@ -46,20 +46,27 @@ func (s *server) Identify(ctx context.Context, in *pb.SendIp) (*pb.IpRecieve, er
 }
 
 func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest) (*pb.CommandsReply, error) {
-	text:=in.GetCommands()
+	text_t:=in.GetCommands()
 	cont:=in.GetCont()
 	
 	//acá leer el texto y escribir en el log de registros y archivo de texto de los planetas
-	text.Split(bufio.ScanLines)
+	text := strings.Split(text_t,"|")
+	
+	/*
 	var lines []string // aqui se guardan las lineas
+	
 	for text.Scan() {
 		lines = append(lines, text.Text())
 	}
-	for _, line := range lines {
+	*/
+	
+
+	for _, line := range text {
 		og_command := strings.Split(line, " ") //separa el comando en :accion que realiza, planeta, ciudad, y valor (que puede ser nuevo nombre de ciudad o numero de solados)
 		command := og_command[0]
 		planet := og_command[1]
 		city := og_command[2]
+		
 
 		var path = "servidores/RP/" + planet + ".txt"
 		var path_log = "servidores/RP/log_" + planet + ".txt"
@@ -69,6 +76,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 		if command == "DeleteCity" {
 			fmt.Println("Comando recibido: " + command + " " + planet + " " + city)
 		} else {
+			value := og_command[3]
 			fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + value)
 		}	
 
@@ -79,7 +87,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			if errtxt != nil {
 				log.Fatal(errtxt)
 			}
-
+			value := og_command[3]
 			b = append(b, []byte(planet+" "+city+" "+value+" \n")...)
 			errtxt = ioutil.WriteFile(path, b, 0644)
 
@@ -109,7 +117,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			}
 
 			lines := strings.Split(string(input), "\n")
-
+			value := og_command[3]
 			for i, line := range lines {
 				if strings.Contains(line, city) {
 					splitLine := strings.Split(string(line), " ")
@@ -129,7 +137,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			if errtxtl != nil {
 				log.Fatal(errtxtl)
 			}
-
+			
 			bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...) //value es la nueva ciudd
 			errtxtl = ioutil.WriteFile(path_log, bl, 0644)
 
@@ -144,7 +152,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			}
 
 			lines := strings.Split(string(input), "\n")
-
+			value := og_command[3]
 			for i, line := range lines {
 				if strings.Contains(line, city) {
 					lines[i] = planet + " " + city + " " + value
@@ -203,7 +211,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				log.Fatal(errtxtl)
 			}
 		}
-	
+	}
 	//crear mensaje que se enviará al siguiente fulcrum
 	if cont !=3 {
 		for i := 0; i < len(VectorClock_list); i++ {
@@ -212,7 +220,17 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				log.Fatal(err)
 			}
 			fileScanner := bufio.NewScanner(readFile)
-			
+			fileScanner.Split(bufio.ScanLines)
+			var lines []string
+			for fileScanner.Scan(){
+				lines = append(lines, fileScanner.Text())
+			}
+
+			readFile.Close()
+			commands_strings := "" 
+			for _, line := range lines{
+				commands_strings += line +"|"
+			}
 			//todos los comandos se los mando al fulcrum que corresponde
 			if ip == "10.6.43.42" {
 				
@@ -226,7 +244,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 		
-				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands:"acá va el mensaje", Cont: in.GetCont()+1})
+				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands:commands_strings, Cont: in.GetCont()+1})
 				if err != nil {
 					log.Fatalf("could not greet: %v", errr)
 				}
@@ -243,7 +261,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 		
-				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: , Cont: in.GetCont()+1})
+				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont()+1})
 				if err != nil {
 					log.Fatalf("could not greet: %v", errr)
 				}
@@ -253,8 +271,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				for i=0; i<2 ; i++ {
 					if (i==0){
 						ipe="10.6.43.42"
-					}
-					else{
+					}else{
 						ipe="10.6.43.43"
 					}
 					conn, err := grpc.Dial(ipe+":9000", grpc.WithInsecure())
@@ -267,18 +284,46 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 					ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 					defer cancel()
 			
-					_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: , Cont: in.GetCont()+1})
+					_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont()+1})
 					if err != nil {
 						log.Fatalf("could not greet: %v", errr)
 					}
 				}
 			}
+			
 				// -ESTO FALTA acá vaciar archivo de texto y log de registro solo si es fulcrum 1 y 2
+				if ip == "10.6.43.42"{
+					for i := 0; i < len(VectorClock_list); i++ {
+						//se borra el archivo log del planeta y archivo planeta del fulcrum 1
+						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
+						if file_log != nil {
+							log.Fatal(file_log)
+						}
+						
+						file_planet := os.Remove(VectorClock_list[i].planet + ".txt")
+						if file_planet != nil {
+							log.Fatal(file_planet)
+						}
+					}
+				}else if (ip == "10.6.43.43"){
+					for i := 0; i < len(VectorClock_list); i++ {
+						//se borra el archivo log del planeta y archivo planeta del fulcrum 2
+						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
+						if file_log != nil {
+							log.Fatal(file_log)
+						}
+						
+						file_planet := os.Remove(VectorClock_list[i].planet + ".txt")
+						if file_planet != nil {
+							log.Fatal(file_planet)
+						}
+					}
+				}
 		}
 	}
 
-	return &pb.SendReply2{Message: "Fulcrum recibió tu información con éxito"}, nil
-}
+	return &pb.CommandsReply{Message: "Fulcrum recibió tu información con éxito"}, nil
+	}
 
 func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.ConsultReply, error) {
 	//command := in.GetCommand()
@@ -620,9 +665,19 @@ func main() {
 					log.Fatal(err)
 				}
 				fileScanner := bufio.NewScanner(readFile)
-				
+				fileScanner.Split(bufio.ScanLines)
+				var lines []string
+				for fileScanner.Scan(){
+					lines = append(lines, fileScanner.Text())
+				}
+
+				readFile.Close()
+				commands_strings := "" 
+				for _, line := range lines{
+					commands_strings += line +"|"
+				}
 				//todos los comandos se los mando al fulcrum 2
-			
+
 				conn, err := grpc.Dial("10.6.43.43:9000", grpc.WithInsecure())
 
 				if err != nil {
@@ -633,7 +688,7 @@ func main() {
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 
-				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands:fileScanner , Cont: 1})
+				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands:commands_strings , Cont: 1})
 				if err != nil {
 					log.Fatalf("could not greet: %v", errr)
 				}
