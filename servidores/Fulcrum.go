@@ -42,7 +42,7 @@ func (s *server) Identify(ctx context.Context, in *pb.SendIp) (*pb.IpRecieve, er
 	ip1 = in.GetIp1()
 	ip2 = in.GetIp2()
 
-	return &pb.IpRecieve{Message: "recibido"}, nil
+	return &pb.IpRecieve{Message: "Operación realizada con éxito"}, nil
 }
 
 func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest) (*pb.CommandsReply, error) {
@@ -74,8 +74,9 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 		crearArchivo_log(path_log)
 
 		for i := 0; i < len(VectorClock_list); i++ {
-			aux = i
+
 			if VectorClock_list[i].planet == planet {
+				aux = i
 				if VectorClock_list[i].X < in.GetX() {
 					VectorClock_list[i].X = in.GetX()
 				}
@@ -690,7 +691,7 @@ func main() {
 		for true {
 			timer := time.NewTimer(2 * time.Minute)
 			<-timer.C
-			fmt.Println("pasaron 2 min")
+			fmt.Println("[2 min] Propagación automática")
 			//fmt.Scanln(&X)
 
 			//esto cada 2 min
@@ -743,7 +744,6 @@ func main() {
 				}
 
 			}
-			fmt.Println("paso por acá")
 
 		}
 

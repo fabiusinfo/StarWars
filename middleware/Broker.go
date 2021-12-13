@@ -93,7 +93,7 @@ func main() {
 		}
 
 	}()
-	fmt.Println("presiona -ENTER- para comunicar a los servidores fulcrum de sus respectivas ips")
+	fmt.Println("-ENTER- para enviar IP's a Fulcrums")
 	fmt.Scanln(&X)
 	//envío ips a servidores fulcrums
 	ip1 := ""
