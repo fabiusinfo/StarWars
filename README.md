@@ -73,7 +73,9 @@ Desde almirante o ahsoka se debiese proceder a añadir ciudades, actualizar nomb
 Despues de haber agregado distintos planetas y ciudades, el proceso Leia, puede solicitar el numero de soldados de una ciudad de un planeta:
 
 > Leia -1- GetNumberRebelds
+ 
 > Leia -Nombre planeta-
+
 > Leia -Nombre ciudad-
 
 
