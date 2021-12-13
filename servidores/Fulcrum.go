@@ -27,9 +27,9 @@ type server struct {
 
 type VectorClock struct {
 	planet string
-	X      int
-	Y      int
-	Z      int
+	X      int32
+	Y      int32
+	Z      int32
 }
 
 //Global Variables
@@ -48,9 +48,11 @@ func (s *server) Identify(ctx context.Context, in *pb.SendIp) (*pb.IpRecieve, er
 func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest) (*pb.CommandsReply, error) {
 	text_t := in.GetCommands()
 	cont := in.GetCont()
+	//clock := in.GetClock() //esto es x y z
 
 	//acá leer el texto y escribir en el log de registros y archivo de texto de los planetas
 	text := strings.Split(text_t, "|")
+	aux := 0
 
 	/*
 		var lines []string // aqui se guardan las lineas
@@ -70,6 +72,22 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 		var path_log = "servidores/RP/log_" + planet + ".txt"
 		crearArchivo(path, planet)
 		crearArchivo_log(path_log)
+
+		for i := 0; i < len(VectorClock_list); i++ {
+			aux = i
+			if VectorClock_list[i].planet == planet {
+				if VectorClock_list[i].X < in.GetX() {
+					VectorClock_list[i].X = in.GetX()
+				}
+				if VectorClock_list[i].Y < in.GetY() {
+					VectorClock_list[i].Y = in.GetY()
+				}
+				if VectorClock_list[i].Z < in.GetZ() {
+					VectorClock_list[i].Z = in.GetZ()
+				}
+
+			}
+		}
 
 		if command == "DeleteCity" {
 			fmt.Println("Comando recibido: " + command + " " + planet + " " + city)
@@ -94,17 +112,20 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			}
 
 			// añadir al log
-			bl, errtxtl := ioutil.ReadFile(path_log)
+			if cont != 3 {
+				bl, errtxtl := ioutil.ReadFile(path_log)
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
-			}
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
 
-			bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...)
-			errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+				bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...)
+				errtxtl = ioutil.WriteFile(path_log, bl, 0644)
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
+
 			}
 
 		} else if command == "UpdateName" {
@@ -130,17 +151,21 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			}
 
 			// añadir al log
-			bl, errtxtl := ioutil.ReadFile(path_log)
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
-			}
+			if cont != 3 {
+				bl, errtxtl := ioutil.ReadFile(path_log)
 
-			bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...) //value es la nueva ciudd
-			errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
+				bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...)
+				errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
+
 			}
 
 		} else if command == "UpdateNumber" {
@@ -163,17 +188,21 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			}
 
 			// añadir al log
-			bl, errtxtl := ioutil.ReadFile(path_log)
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
-			}
+			if cont != 3 {
+				bl, errtxtl := ioutil.ReadFile(path_log)
 
-			bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...)
-			errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
+				bl = append(bl, []byte(command+" "+planet+" "+city+" "+value+" \n")...)
+				errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
+
 			}
 		} else { //DeleteCity
 			input, err := ioutil.ReadFile(path)
@@ -196,17 +225,20 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				log.Fatalln(err)
 			}
 			// añadir al log
-			bl, errtxtl := ioutil.ReadFile(path_log)
+			if cont != 3 {
+				bl, errtxtl := ioutil.ReadFile(path_log)
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
-			}
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
 
-			bl = append(bl, []byte(command+" "+planet+" "+city+" \n")...)
-			errtxtl = ioutil.WriteFile(path_log, bl, 0644)
+				bl = append(bl, []byte(command+" "+planet+" "+city+"\n")...)
+				errtxtl = ioutil.WriteFile(path_log, bl, 0644)
 
-			if errtxtl != nil {
-				log.Fatal(errtxtl)
+				if errtxtl != nil {
+					log.Fatal(errtxtl)
+				}
+
 			}
 		}
 	}
@@ -242,7 +274,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 
-				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont() + 1})
+				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont() + 1, X: VectorClock_list[aux].X, Y: VectorClock_list[aux].Y, Z: VectorClock_list[aux].Z})
 				if err != nil {
 					log.Fatalf("could not greet: %v", errr)
 				}
@@ -258,7 +290,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 
-				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont() + 1})
+				_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont() + 1, X: VectorClock_list[aux].X, Y: VectorClock_list[aux].Y, Z: VectorClock_list[aux].Z})
 				if err != nil {
 					log.Fatalf("could not greet: %v", errr)
 				}
@@ -281,7 +313,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 					ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 					defer cancel()
 
-					_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont() + 1})
+					_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: in.GetCont() + 1, X: VectorClock_list[aux].X, Y: VectorClock_list[aux].Y, Z: VectorClock_list[aux].Z})
 					if err != nil {
 						log.Fatalf("could not greet: %v", errr)
 					}
@@ -353,7 +385,7 @@ func (s *server) ConsultPlanet(ctx context.Context, in *pb.ConsultRequest) (*pb.
 	for i := 0; i < len(VectorClock_list); i++ {
 		if VectorClock_list[i].planet == planet {
 			aux = i
-			VectorClock = strconv.Itoa(VectorClock_list[aux].X) + " " + strconv.Itoa(VectorClock_list[aux].Y) + " " + strconv.Itoa(VectorClock_list[aux].Z)
+			VectorClock = strconv.Itoa(int(VectorClock_list[aux].X)) + " " + strconv.Itoa(int(VectorClock_list[aux].Y)) + " " + strconv.Itoa(int(VectorClock_list[aux].Z))
 			break
 
 		}
@@ -571,7 +603,7 @@ func (s *server) SendInformationF(ctx context.Context, in *pb.SendRequestF) (*pb
 		}
 	}
 
-	return &pb.SendReplyF{Clock: strconv.Itoa(VectorClock_list[aux].X) + " " + strconv.Itoa(VectorClock_list[aux].Y) + " " + strconv.Itoa(VectorClock_list[aux].Z)}, nil
+	return &pb.SendReplyF{Clock: strconv.Itoa(int(VectorClock_list[aux].X)) + " " + strconv.Itoa(int(VectorClock_list[aux].Y)) + " " + strconv.Itoa(int(VectorClock_list[aux].Z))}, nil
 }
 
 func propagation() {
@@ -691,7 +723,7 @@ func main() {
 					ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 					defer cancel()
 
-					_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: 1})
+					_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: 1, X: VectorClock_list[i].X, Y: VectorClock_list[i].Y, Z: VectorClock_list[i].Z})
 					if err != nil {
 						log.Fatalf("could not greet: %v", errr)
 					}

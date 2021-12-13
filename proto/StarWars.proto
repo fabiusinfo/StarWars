@@ -18,7 +18,10 @@ service StarWarsService {
 }
 message CommandsRequest{
     string commands = 1;
-    int32 cont = 5;
+    int32 cont = 2;
+    int32 x=3;
+    int32 y=4;
+    int32 z=5;
 }
 
 message CommandsReply{
