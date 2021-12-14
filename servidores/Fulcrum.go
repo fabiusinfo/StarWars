@@ -72,7 +72,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 		var path_log = "servidores/RP/log_" + planet + ".txt"
 		crearArchivo(path, planet)
 		crearArchivo_log(path_log)
-
+		fmt.Println("cagó en 1")
 		for i := 0; i < len(VectorClock_list); i++ {
 
 			if VectorClock_list[i].planet == planet {
@@ -89,6 +89,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 			}
 		}
+		fmt.Println("cagó en 2")
 
 		if command == "DeleteCity" {
 			fmt.Println("Comando recibido: " + command + " " + planet + " " + city)
@@ -338,6 +339,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 					}
 				} else if ip == "10.6.43.43" {
 					for i := 0; i < len(VectorClock_list); i++ {
+						fmt.Println("cagó en 4")
 						//se borra el archivo log del planeta y archivo planeta del fulcrum 2
 						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 						if file_log != nil {
@@ -348,6 +350,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 						if file_planet != nil {
 							log.Fatal(file_planet)
 						}
+						fmt.Println("cagó en 5")
 					}
 				}
 			}
