@@ -92,14 +92,12 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			}
 		}
 
-		fmt.Println("cagó en 1")
 		if command == "DeleteCity" {
 			fmt.Println("Comando recibido: " + command + " " + planet + " " + city)
 		} else {
 			value := og_command[3]
 			fmt.Println("Comando recibido: " + command + " " + planet + " " + city + " " + value)
 		}
-		fmt.Println("cagó en 2")
 		if command == "AddCity" {
 			// añadir al texto
 			b, errtxt := ioutil.ReadFile(path)
@@ -245,12 +243,10 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 			}
 		}
-		fmt.Println("cagó en 3")
 	}
 	fmt.Println("no logra salir del for")
 	//crear mensaje que se enviará al siguiente fulcrum
-	if cont != 3 {
-		fmt.Println("cagó acá")
+	if cont != 4 {
 		for i := 0; i < len(VectorClock_list); i++ {
 			readFile, err := os.Open("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 			if err != nil {
@@ -329,7 +325,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 			// -ESTO FALTA acá vaciar archivo de texto y log de registro solo si es fulcrum 1 y 2
 			if cont != 3 {
-				fmt.Println("cagó acqué")
+
 				if ip == "10.6.43.42" {
 					for i := 0; i < len(VectorClock_list); i++ {
 						//se borra el archivo log del planeta y archivo planeta del fulcrum 1
@@ -345,7 +341,6 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 					}
 				} else if ip == "10.6.43.43" {
 					for i := 0; i < len(VectorClock_list); i++ {
-						fmt.Println("cagó en 4")
 						//se borra el archivo log del planeta y archivo planeta del fulcrum 2
 						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 						if file_log != nil {
@@ -356,7 +351,6 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 						if file_planet != nil {
 							log.Fatal(file_planet)
 						}
-						fmt.Println("cagó en 4")
 					}
 				}
 			}
