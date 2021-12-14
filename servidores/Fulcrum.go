@@ -246,7 +246,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 	}
 	fmt.Println("no logra salir del for")
 	//crear mensaje que se enviará al siguiente fulcrum
-	if cont != 4 {
+	if cont != 3 {
 		for i := 0; i < len(VectorClock_list); i++ {
 			readFile, err := os.Open("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 			if err != nil {
@@ -325,6 +325,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 			// -ESTO FALTA acá vaciar archivo de texto y log de registro solo si es fulcrum 1 y 2
 			if cont != 3 {
+				fmt.Println("no debería entrar acá, pero si entra")
 
 				if ip == "10.6.43.42" {
 					for i := 0; i < len(VectorClock_list); i++ {
