@@ -243,6 +243,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 			}
 		}
+		fmt.Println("cagó en 3")
 	}
 	//crear mensaje que se enviará al siguiente fulcrum
 	if cont != 3 {
