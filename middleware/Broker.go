@@ -128,11 +128,11 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		fmt.Println(r.GetMessage())
+		message:= r.GetMessage()
 
 	}
 
-	fmt.Println("<Servidor Broker habilitado>")
+	fmt.Println(message+"\n<Servidor Broker habilitado>")
 	fmt.Scanln(&X)
 
 }

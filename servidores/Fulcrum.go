@@ -301,6 +301,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			} else {
 				var ipe string
 				for i = 0; i < 2; i++ {
+					fmt.Println("kkkkkkkkkkkkkkkkkkkkk")
 					if i == 0 {
 						ipe = "10.6.43.42"
 					} else {
