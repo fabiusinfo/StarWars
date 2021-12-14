@@ -52,7 +52,8 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 	//acá leer el texto y escribir en el log de registros y archivo de texto de los planetas
 	text := strings.Split(text_t, "|")
-	fmt.Println(text)
+	text[len(text)-1] = ""    // Erase last element (write zero value).
+	text = text[:len(text)-1] // Truncate slice.
 	aux := 0
 
 	/*
@@ -699,7 +700,10 @@ func main() {
 		for true {
 			timer := time.NewTimer(2 * time.Minute)
 			<-timer.C
-			fmt.Println("[2 min] Propagación automática")
+			if ip == "10.6.43.42" {
+				fmt.Println("[2 min] Propagación automática")
+			}
+
 			//fmt.Scanln(&X)
 
 			//esto cada 2 min
