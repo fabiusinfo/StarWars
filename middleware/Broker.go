@@ -95,6 +95,7 @@ func main() {
 	}()
 	fmt.Println("-ENTER- para enviar IP's a Fulcrums")
 	fmt.Scanln(&X)
+	message := ""
 	//envío ips a servidores fulcrums
 	ip1 := ""
 	ip2 := ""
@@ -128,7 +129,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		message:= r.GetMessage()
+		message= r.GetMessage()
 
 	}
 
