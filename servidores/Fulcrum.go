@@ -52,6 +52,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 	//acá leer el texto y escribir en el log de registros y archivo de texto de los planetas
 	text := strings.Split(text_t, "|")
+	fmt.Println(text)
 	aux := 0
 
 	/*
