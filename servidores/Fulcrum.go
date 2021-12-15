@@ -273,6 +273,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 						if file_log != nil {
 							log.Fatal(file_log)
 						}
+						crearArchivo_log("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 						/*	
 						file_planet := os.Remove("servidores/" + VectorClock_list[i].planet + ".txt")
 						if file_planet != nil {
@@ -286,6 +287,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 						if file_log != nil {
 							log.Fatal(file_log)
 						}
+						crearArchivo_log("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 						/*
 						file_planet := os.Remove("servidores/RP/" + VectorClock_list[i].planet + ".txt")
 						if file_planet != nil {
@@ -743,6 +745,8 @@ func main() {
 					if file_log != nil {
 						log.Fatal(file_log)
 					} 
+
+					crearArchivo_log("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
 					/*
 					//se borra el archivo del planeta
 					file_planet := os.Remove("servidores/RP/" + VectorClock_list[i].planet + ".txt")

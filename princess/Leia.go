@@ -87,9 +87,9 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
-		log.Printf("Rebeldes: " + r.GetRebelds() + "\nReloj: " + r.GetClock())
+		fmt.Println("\nRebeldes: " + r.GetRebelds() + "\nReloj: " + r.GetClock()+"\n")
 
 		MonotonicReads = append(MonotonicReads, ReadStruct{message[0], message[1], message[2], r.GetRebelds(), r.GetClock() /*, r.GetIp()*/})
-		fmt.Println(MonotonicReads)
+		//fmt.Println(MonotonicReads)
 	}
 }
