@@ -94,16 +94,3 @@ Después de haber agregado distintos planetas y ciudades, el proceso Leia, puede
 > Leia -Nombre planeta-
 
 > Leia -Nombre ciudad-
-
-
-
-
-
-
-
-
-
-
-
-
-
