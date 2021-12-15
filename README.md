@@ -15,23 +15,37 @@ Katherine Salgado 201610515-8
 	- Máquina 3, 10.6.43.43: Ahsoka  (8080) y servidor Fulcrum 2 (9000)
 	- Máquina 4, 10.6.43.44: Almirante Thrawn y servidor Fulcrum 3 (9000)
 - Se implementó una interfaz de fácil uso, que consiste en ingresar un número para seleccionar un comando, en el caso de los informantes, al elegir un comando, con su número, se piden por separado sus componentes (planeta, ciudad, valor (en el caso de Delete no pide valor ya que no se requiere)). 
+
 Ejemplo:
+
 	Ingrese el número del comando a usar:
+
 	-1- AddCity
+
 	-2- UpdateName
+	
 	-3- UpdateNumber
+	
 	-4- DeleteCity
+	
 	3
+	
 	Ingrese -Nombre planeta-
+	
 	earth
+	
 	Ingrese -Nombre ciudad-
+	
 	stg
+	
 	Ingrese -Nuevo valor-
+	
 	70
 
 - La propagación se hace a los 2 [min] y se muestra un mensaje de una de las máquinas indicando su activación.
 - El Broker no tiene  movimiento en cuanto a prints por limpieza, pero es quien redirige la información como debe ser.
 - Cada vez que le llega un comando a los Fulcrum se muestra por pantalla el mismo.
+- Para los casos en que se intente Actualizar algo de un planeta/ciudad que no exista, los informantes envian los comandos pero no se ejecuta nada particular, no sucede lo mismo con Leia. Cuando se pregunta por un planeta que no existe **se termina el proceso de Leia y del fulcrum al que le pregunta**.
 - El merge no está implementado.
 
 ### Instrucciones de ejecución:
