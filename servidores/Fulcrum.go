@@ -264,6 +264,40 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			for _, line := range lines {
 				commands_strings += line + "|"
 			}
+
+			// -ESTO FALTA acá vaciar archivo de texto y log de registro solo si es fulcrum 1 y 2
+			if cont != 3 {
+				fmt.Println("no debería entrar acá, pero si entra")
+				fmt.Println("el contador es: ")
+				fmt.Println(cont)
+				if ip == "10.6.43.42" {
+					for i := 0; i < len(VectorClock_list); i++ {
+						//se borra el archivo log del planeta y archivo planeta del fulcrum 1
+						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
+						if file_log != nil {
+							log.Fatal(file_log)
+						}
+
+						file_planet := os.Remove("servidores/" + VectorClock_list[i].planet + ".txt")
+						if file_planet != nil {
+							log.Fatal(file_planet)
+						}
+					}
+				} else if ip == "10.6.43.43" {
+					for i := 0; i < len(VectorClock_list); i++ {
+						//se borra el archivo log del planeta y archivo planeta del fulcrum 2
+						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
+						if file_log != nil {
+							log.Fatal(file_log)
+						}
+
+						file_planet := os.Remove("servidores/RP/" + VectorClock_list[i].planet + ".txt")
+						if file_planet != nil {
+							log.Fatal(file_planet)
+						}
+					}
+				}
+			}
 			//todos los comandos se los mando al fulcrum que corresponde
 			if ip == "10.6.43.42" {
 
@@ -324,39 +358,6 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 				}
 			}
 
-			// -ESTO FALTA acá vaciar archivo de texto y log de registro solo si es fulcrum 1 y 2
-			if cont != 3 {
-				fmt.Println("no debería entrar acá, pero si entra")
-				fmt.Println("el contador es: ")
-				fmt.Println(cont)
-				if ip == "10.6.43.42" {
-					for i := 0; i < len(VectorClock_list); i++ {
-						//se borra el archivo log del planeta y archivo planeta del fulcrum 1
-						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
-						if file_log != nil {
-							log.Fatal(file_log)
-						}
-
-						file_planet := os.Remove("servidores/" + VectorClock_list[i].planet + ".txt")
-						if file_planet != nil {
-							log.Fatal(file_planet)
-						}
-					}
-				} else if ip == "10.6.43.43" {
-					for i := 0; i < len(VectorClock_list); i++ {
-						//se borra el archivo log del planeta y archivo planeta del fulcrum 2
-						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
-						if file_log != nil {
-							log.Fatal(file_log)
-						}
-
-						file_planet := os.Remove("servidores/RP/" + VectorClock_list[i].planet + ".txt")
-						if file_planet != nil {
-							log.Fatal(file_planet)
-						}
-					}
-				}
-			}
 		}
 	}
 
