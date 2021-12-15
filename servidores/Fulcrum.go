@@ -244,7 +244,6 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			}
 		}
 	}
-	fmt.Println("no logra salir del for")
 	//crear mensaje que se enviará al siguiente fulcrum
 	if cont != 3 {
 		for i := 0; i < len(VectorClock_list); i++ {
@@ -267,9 +266,6 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 
 			// -ESTO FALTA acá vaciar archivo de texto y log de registro solo si es fulcrum 1 y 2
 			if cont != 3 {
-				fmt.Println("no debería entrar acá, pero si entra")
-				fmt.Println("el contador es: ")
-				fmt.Println(cont)
 				if ip == "10.6.43.42" {
 					for i := 0; i < len(VectorClock_list); i++ {
 						//se borra el archivo log del planeta y archivo planeta del fulcrum 1
@@ -298,7 +294,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 						*/
 					}
 				}
-			} */
+			}
 			//todos los comandos se los mando al fulcrum que corresponde
 			if ip == "10.6.43.42" {
 
@@ -336,7 +332,6 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 			} else {
 				var ipe string
 				for i = 0; i < 2; i++ {
-					fmt.Println("kkkkkkkkkkkkkkkkkkkkk")
 					if i == 0 {
 						ipe = "10.6.43.42"
 					} else {
