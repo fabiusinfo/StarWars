@@ -15,7 +15,7 @@ Katherine Salgado 201610515-8
 	- Máquina 3, 10.6.43.43: Ahsoka  (8080) y servidor Fulcrum 2 (9000)
 	- Máquina 4, 10.6.43.44: Almirante Thrawn y servidor Fulcrum 3 (9000)
 -Se implemento una interfaz para facilitar el uso de comandos, para ingresar un comando se selecciona el numero que especifica la interfaz, en el caso de los informantes, al elegir un comando, se escribe por separado el nombre del planeta, seguido por la ciudad y seguido del valor (no hace falta el valor para el comando DeleteCity)
-
+-Se decidio deshabilitar el funcionamiento de la propagacion de cambios, debido a mal funcionamiento
 
 ### Instrucciones de ejecución:
 
