@@ -15,7 +15,7 @@ Katherine Salgado 201610515-8
 	- Máquina 3, 10.6.43.43: Ahsoka  (8080) y servidor Fulcrum 2 (9000)
 	- Máquina 4, 10.6.43.44: Almirante Thrawn y servidor Fulcrum 3 (9000)
 - Se implementó una interfaz de fácil uso, que consiste en ingresar un número para seleccionar un comando, en el caso de los informantes, al elegir un comando, con su número, se piden por separado sus componentes (planeta, ciudad, valor (en el caso de Delete no pide valor ya que no se requiere)). 
-
+r
 Ejemplo:
 
 	Ingrese el número del comando a usar:
