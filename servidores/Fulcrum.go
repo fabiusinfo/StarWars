@@ -692,72 +692,73 @@ func main() {
 		}
 
 	}()
+	/*
+		go func() {
 
-	go func() {
+			for true {
+				timer := time.NewTimer(2 * time.Minute)
+				<-timer.C
+				if ip == "10.6.43.42" {
+					fmt.Println("[2 min] Propagación automática")
+				}
 
-		for true {
-			timer := time.NewTimer(2 * time.Minute)
-			<-timer.C
-			if ip == "10.6.43.42" {
-				fmt.Println("[2 min] Propagación automática")
-			}
+				//fmt.Scanln(&X)
 
-			//fmt.Scanln(&X)
+				//esto cada 2 min
+				if ip == "10.6.43.42" {
+					//leer log de registro, vaciar log y planet.txt y enviar en commands
+					for i := 0; i < len(VectorClock_list); i++ {
+						readFile, err := os.Open("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
+						if err != nil {
+							log.Fatal(err)
+						}
+						fileScanner := bufio.NewScanner(readFile)
+						fileScanner.Split(bufio.ScanLines)
+						var lines []string
+						for fileScanner.Scan() {
+							lines = append(lines, fileScanner.Text())
+						}
 
-			//esto cada 2 min
-			if ip == "10.6.43.42" {
-				//leer log de registro, vaciar log y planet.txt y enviar en commands
-				for i := 0; i < len(VectorClock_list); i++ {
-					readFile, err := os.Open("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
-					if err != nil {
-						log.Fatal(err)
+						readFile.Close()
+						commands_strings := ""
+						for _, line := range lines {
+							commands_strings += line + "|"
+						}
+						//todos los comandos se los mando al fulcrum 2
+
+						conn, err := grpc.Dial("10.6.43.43:9000", grpc.WithInsecure())
+
+						if err != nil {
+							panic("cannot connect with server " + err.Error())
+						}
+						servicePropagation := pb.NewStarWarsServiceClient(conn)
+
+						ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+						defer cancel()
+
+						_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: 1, X: VectorClock_list[i].X, Y: VectorClock_list[i].Y, Z: VectorClock_list[i].Z})
+						if err != nil {
+							log.Fatalf("could not greet: %v", errr)
+						}
+						readFile.Close()
+						//se borra el archivo log del planeta
+						file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
+						if file_log != nil {
+							log.Fatal(file_log)
+						}
+						//se borra el archivo del planeta
+						file_planet := os.Remove("servidores/RP/" + VectorClock_list[i].planet + ".txt")
+						if file_planet != nil {
+							log.Fatal(file_planet)
+						}
 					}
-					fileScanner := bufio.NewScanner(readFile)
-					fileScanner.Split(bufio.ScanLines)
-					var lines []string
-					for fileScanner.Scan() {
-						lines = append(lines, fileScanner.Text())
-					}
 
-					readFile.Close()
-					commands_strings := ""
-					for _, line := range lines {
-						commands_strings += line + "|"
-					}
-					//todos los comandos se los mando al fulcrum 2
-
-					conn, err := grpc.Dial("10.6.43.43:9000", grpc.WithInsecure())
-
-					if err != nil {
-						panic("cannot connect with server " + err.Error())
-					}
-					servicePropagation := pb.NewStarWarsServiceClient(conn)
-
-					ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-					defer cancel()
-
-					_, errr := servicePropagation.FulcrumComunication(ctx, &pb.CommandsRequest{Commands: commands_strings, Cont: 1, X: VectorClock_list[i].X, Y: VectorClock_list[i].Y, Z: VectorClock_list[i].Z})
-					if err != nil {
-						log.Fatalf("could not greet: %v", errr)
-					}
-					readFile.Close()
-					//se borra el archivo log del planeta
-					file_log := os.Remove("servidores/RP/log_" + VectorClock_list[i].planet + ".txt")
-					if file_log != nil {
-						log.Fatal(file_log)
-					}
-					//se borra el archivo del planeta
-					file_planet := os.Remove("servidores/RP/" + VectorClock_list[i].planet + ".txt")
-					if file_planet != nil {
-						log.Fatal(file_planet)
-					}
 				}
 
 			}
 
-		}
-
-	}()
+		}()
+	*/
 	fmt.Println("<Servidor Fulcrum habilitado>")
 	fmt.Scanln(&X)
 
