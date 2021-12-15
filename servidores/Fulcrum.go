@@ -298,7 +298,7 @@ func (s *server) FulcrumComunication(ctx context.Context, in *pb.CommandsRequest
 						*/
 					}
 				}
-			} */
+			} 
 			//todos los comandos se los mando al fulcrum que corresponde
 			if ip == "10.6.43.42" {
 
